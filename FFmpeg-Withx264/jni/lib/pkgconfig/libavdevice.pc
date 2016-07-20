@@ -1,0 +1,14 @@
+prefix=../jni
+exec_prefix=${prefix}
+libdir=${prefix}/lib
+includedir=${prefix}/include
+
+Name: libavdevice
+Description: FFmpeg device handling library
+Version: 57.0.101
+Requires: libavformat >= 57.41.100, libavcodec >= 57.48.101, libavutil >= 55.28.100
+Requires.private: 
+Conflicts:
+Libs: -L${libdir}  -lavdevice -lx264 -lm -lz -pthread
+Libs.private: 
+Cflags: -I${includedir}

@@ -1,0 +1,14 @@
+prefix=../jni
+exec_prefix=${prefix}
+libdir=${prefix}/lib
+includedir=${prefix}/include
+
+Name: libavfilter
+Description: FFmpeg audio/video filtering library
+Version: 6.47.100
+Requires: libswscale >= 4.1.100, libpostproc >= 54.0.100, libswresample >= 2.1.100, libavformat >= 57.41.100, libavcodec >= 57.48.101, libavutil >= 55.28.100
+Requires.private: 
+Conflicts:
+Libs: -L${libdir}  -lavfilter -lx264 -lm -lz -pthread
+Libs.private: 
+Cflags: -I${includedir}
