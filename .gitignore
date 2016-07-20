@@ -1,0 +1,11 @@
+### Android Studio Eclipse template
+.gradle
+.idea
+.settings
+bin
+build
+gen
+.classpath
+.project
+local.properties
+*.iml
