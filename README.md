@@ -1,0 +1,2 @@
+# FFmpegForAndroid
+移植FFmpeg库到Android平台
