@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="cn.byhook.ffmpegmerge">
+    package="cn.byhook.ffmpegwithx264">
 
     <application
         android:allowBackup="true"
