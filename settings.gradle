@@ -1,1 +1,1 @@
-include ':app', ':ffmpeg-merge', ':ffmpeg'
+include ':app', ':ffmpeg-merge', ':ffmpeg', ':common'
