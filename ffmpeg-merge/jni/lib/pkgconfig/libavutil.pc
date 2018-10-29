@@ -1,11 +1,11 @@
-prefix=../jni
+prefix=/home/byhook/code/media/libs/ffmpeg-x264-fdkaac-merge/armeabi-v7a
 exec_prefix=${prefix}
 libdir=${prefix}/lib
 includedir=${prefix}/include
 
 Name: libavutil
 Description: FFmpeg utility library
-Version: 55.28.100
+Version: 55.58.100
 Requires: 
 Requires.private: 
 Conflicts:

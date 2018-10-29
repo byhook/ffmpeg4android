@@ -1,12 +1,12 @@
-prefix=../jni
+prefix=/home/byhook/code/media/libs/ffmpeg-x264-fdkaac-merge/armeabi-v7a
 exec_prefix=${prefix}
 libdir=${prefix}/lib
 includedir=${prefix}/include
 
 Name: libswscale
 Description: FFmpeg image rescaling library
-Version: 4.1.100
-Requires: libavutil >= 55.28.100
+Version: 4.6.100
+Requires: libavutil >= 55.58.100
 Requires.private: 
 Conflicts:
 Libs: -L${libdir}  -lswscale -lm
