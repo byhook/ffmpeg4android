@@ -10,3 +10,4 @@ gen
 local.properties
 *.iml
 obj
+.externalNativeBuild
