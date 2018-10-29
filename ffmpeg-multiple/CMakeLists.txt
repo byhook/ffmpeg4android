@@ -2,7 +2,7 @@
 cmake_minimum_required(VERSION 3.4.1)
 
 
-add_library(ffmpeg-cmake
+add_library(ffmpeg-multiple
            SHARED
            src/main/cpp/cmake-hello.c)
 
@@ -65,4 +65,4 @@ set_target_properties(swscale
 #头文件
 include_directories(libs/${ANDROID_ABI}/include)
 
-target_link_libraries(ffmpeg-cmake avcodec avdevice avfilter avformat avutil swscale postproc ${log-lib})
+target_link_libraries(ffmpeg-multiple avcodec avdevice avfilter avformat avutil swscale postproc ${log-lib})

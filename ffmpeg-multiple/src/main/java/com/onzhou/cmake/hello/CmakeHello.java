@@ -17,7 +17,7 @@ public class CmakeHello {
         System.loadLibrary("swresample");
         System.loadLibrary("swscale");
 
-        System.loadLibrary("ffmpeg-cmake");
+        System.loadLibrary("ffmpeg-multiple");
     }
 
     public native String urlprotocolinfo();
