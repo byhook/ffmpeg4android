@@ -29,6 +29,8 @@ PREFIX=$LIBS_DIR/$AOSP_ABI
 --enable-shared \
 --disable-static \
 --enable-small \
+--enable-postproc \
+--enable-avdevice \
 --disable-outdevs \
 --disable-ffprobe \
 --disable-ffplay \
@@ -38,8 +40,6 @@ PREFIX=$LIBS_DIR/$AOSP_ABI
 --disable-ffprobe \
 --disable-ffplay \
 --disable-ffmpeg \
---disable-postproc \
---disable-avdevice \
 --disable-symver \
 --disable-stripping \
 --extra-cflags="$FF_EXTRA_CFLAGS  $FF_CFLAGS" \
