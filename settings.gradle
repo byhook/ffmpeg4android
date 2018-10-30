@@ -1,4 +1,4 @@
-include ':app'
+include ':app', ':ffmpeg-multiple-hello'
 include ':common'
 include ':ffmpeg-multiple'
 include ':ffmpeg-single'

@@ -9,7 +9,7 @@ public class NowStreamer {
 
     static {
         System.loadLibrary("ffmpeg");
-        System.loadLibrary("now-streamer");
+        System.loadLibrary("ffmpeg-streamer");
     }
 
     public native int startPublish(String input, String output);
