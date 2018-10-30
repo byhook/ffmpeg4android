@@ -1,4 +1,4 @@
-include ':app', ':ffmpeg-multiple-hello', ':sdl2-hello', ':ffmpeg-single-decode'
+include ':app', ':ffmpeg-multiple-hello', ':sdl2-hello', ':ffmpeg-single-decode', ':ffmpeg-single-cmd'
 include ':common'
 include ':ffmpeg-multiple'
 include ':ffmpeg-single'
