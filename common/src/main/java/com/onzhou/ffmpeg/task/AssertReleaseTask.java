@@ -1,4 +1,4 @@
-package com.onzhou.ffmpeg.streamer;
+package com.onzhou.ffmpeg.task;
 
 import android.content.Context;
 import android.os.AsyncTask;
@@ -10,14 +10,17 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.ref.WeakReference;
 
-public class VideoReleaseTask extends AsyncTask<Void, Void, String> {
+public class AssertReleaseTask extends AsyncTask<Void, Void, String> {
 
     private WeakReference<Context> weakContext;
 
+    private String fileName;
+
     private ReleaseCallback releaseCallback;
 
-    public VideoReleaseTask(Context context, ReleaseCallback releaseCallback) {
+    public AssertReleaseTask(Context context, String fileName, ReleaseCallback releaseCallback) {
         this.weakContext = new WeakReference<>(context);
+        this.fileName = fileName;
         this.releaseCallback = releaseCallback;
     }
 
@@ -28,8 +31,8 @@ public class VideoReleaseTask extends AsyncTask<Void, Void, String> {
         try {
             Context appContext = weakContext.get();
             if (appContext != null) {
-                inputStream = appContext.getAssets().open("input.mp4");
-                File targetFile = new File(appContext.getExternalFilesDir(null), "input.mp4");
+                inputStream = appContext.getAssets().open(fileName);
+                File targetFile = new File(appContext.getExternalFilesDir(null), fileName);
                 fos = new FileOutputStream(targetFile);
                 int length;
                 byte[] buffer = new byte[8 * 1024];
@@ -49,10 +52,10 @@ public class VideoReleaseTask extends AsyncTask<Void, Void, String> {
     }
 
     @Override
-    protected void onPostExecute(String videoPath) {
-        super.onPostExecute(videoPath);
+    protected void onPostExecute(String filePath) {
+        super.onPostExecute(filePath);
         if (releaseCallback != null) {
-            releaseCallback.onReleaseSuccess(videoPath);
+            releaseCallback.onReleaseSuccess(filePath);
         }
     }
 
@@ -68,7 +71,7 @@ public class VideoReleaseTask extends AsyncTask<Void, Void, String> {
 
     public interface ReleaseCallback {
 
-        void onReleaseSuccess(String videoPath);
+        void onReleaseSuccess(String filePath);
 
     }
 

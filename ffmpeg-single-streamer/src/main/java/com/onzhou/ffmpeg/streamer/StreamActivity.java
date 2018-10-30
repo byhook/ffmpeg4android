@@ -3,11 +3,11 @@ package com.onzhou.ffmpeg.streamer;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.os.AsyncTaskCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
 
 import com.onzhou.ffmpeg.base.AbsBaseActivity;
+import com.onzhou.ffmpeg.task.AssertReleaseTask;
 
 import java.io.File;
 
@@ -19,7 +19,7 @@ import io.reactivex.schedulers.Schedulers;
  * @date: 2018-10-29
  * @description:
  */
-public class StreamActivity extends AbsBaseActivity implements VideoReleaseTask.ReleaseCallback {
+public class StreamActivity extends AbsBaseActivity implements AssertReleaseTask.ReleaseCallback {
 
     /**
      * 推流地址
@@ -62,7 +62,7 @@ public class StreamActivity extends AbsBaseActivity implements VideoReleaseTask.
     }
 
     public void setupVideo() {
-        VideoReleaseTask videoReleaseTask = new VideoReleaseTask(this, this);
+        AssertReleaseTask videoReleaseTask = new AssertReleaseTask(this, "input.mp4", this);
         AsyncTaskCompat.executeParallel(videoReleaseTask);
     }
 
