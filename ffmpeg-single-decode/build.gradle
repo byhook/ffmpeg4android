@@ -43,6 +43,7 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
 
     compile project(':common')
+    compile project(':common-asserts')
     compile project(':ffmpeg-single')
     compile rootProject.ext.dependencies["appcompat-v7"]
     compile rootProject.ext.dependencies["design"]
