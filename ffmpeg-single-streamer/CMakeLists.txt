@@ -4,8 +4,7 @@ cmake_minimum_required(VERSION 3.4.1)
 
 add_library(ffmpeg-streamer
            SHARED
-           src/main/cpp/ffmpeg_streamer.c
-           src/main/cpp/ffmpeg_decode.c)
+           src/main/cpp/ffmpeg_streamer.c)
 
 find_library(log-lib
             log)

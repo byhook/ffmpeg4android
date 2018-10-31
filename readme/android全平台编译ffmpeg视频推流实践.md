@@ -1,4 +1,92 @@
 
+#### 本文目录
+
+- [概述](#概述)
+- [配置环境](#配置环境)
+- [新建streamer工程](#新建streamer工程)
+- [播放串流](#播放串流)
+
+#### 概述
+
+还是先从最简单的搞起来，先从最基本的视频推流开始，要知道在电脑上使用`ffmpeg`完成推流，简直不要太简单，直接使用`ffmpeg`的推流命令即可，今天想在`android平台实践一下`，具体操作大家也可以看看`雷神的博客`。
+
+```java
+ffmpeg -re -i input.mp4 -vcodec copy -f flv rtmp://192.168.1.102:1935/onzhou/live
+```
+
+#### 配置环境
+
+`操作系统: ubuntu 16.05`
+
+`注意: ffmpeg库`的编译使用的是`android-ndk-r10e版本`，使用高版本编译会报错。
+
+而`android-studio`工程中配合`cmake`使用的版本则是`android-ndk-r16b版本`
+
+![](https://github.com/byhook/ffmpeg4android/blob/master/readme/images/media_060_water.png)
+
+#### 新建工程`ffmpeg-single-streamer`
+
+![](https://github.com/byhook/ffmpeg4android/blob/master/readme/images/选区_078.png)
+
+- `build.gradle`配置比较简单，可以参考之前的文章
+
+- 新建`CMakeLists.txt文件`，配置如下
+
+```java
+
+cmake_minimum_required(VERSION 3.4.1)
+
+
+add_library(ffmpeg-streamer
+           SHARED
+           src/main/cpp/ffmpeg_streamer.c)
+
+find_library(log-lib
+            log)
+
+#获取上级目录
+get_filename_component(PARENT_DIR ${CMAKE_SOURCE_DIR} PATH)
+set(LIBRARY_DIR ${PARENT_DIR}/ffmpeg-single)
+
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++11")
+set(CMAKE_VERBOSE_MAKEFILE on)
+
+add_library(ffmpeg-single
+           SHARED
+           IMPORTED)
+
+set_target_properties(ffmpeg-single
+                    PROPERTIES IMPORTED_LOCATION
+                    ${LIBRARY_DIR}/libs/${ANDROID_ABI}/libffmpeg.so
+                    )
+
+#头文件
+include_directories(${LIBRARY_DIR}/libs/${ANDROID_ABI}/include)
+
+target_link_libraries(ffmpeg-streamer ffmpeg-single ${log-lib})
+```
+
+- 新建`NowStreamer.java文件`
+
+```java
+package com.onzhou.ffmpeg.streamer;
+
+public class NowStreamer {
+
+    static {
+        System.loadLibrary("ffmpeg");
+        System.loadLibrary("ffmpeg-streamer");
+    }
+
+    public native int startPublish(String input, String output);
+
+}
+```
+
+- 在`src/main/cpp目录`新建源文件`ffmpeg_streamer.c`
+
+```java
+
 #include <jni.h>
 #include <stdio.h>
 #include <time.h>
@@ -176,7 +264,7 @@ JNIEXPORT jint JNICALL Java_com_onzhou_ffmpeg_streamer_NowStreamer_startPublish
     }
     //Write file trailer
     av_write_trailer(ofmt_ctx);
-    end:
+end:
     avformat_close_input(&ifmt_ctx);
     /* close output */
     if (ofmt_ctx && !(ofmt->flags & AVFMT_NOFILE))
@@ -188,3 +276,36 @@ JNIEXPORT jint JNICALL Java_com_onzhou_ffmpeg_streamer_NowStreamer_startPublish
     }
     return 0;
 }
+```
+
+`推流服务器的搭建，可以参考之前的文章`
+
+```java
+public void onStartClick(View view) {
+		if (nowStreamer == null) {
+				nowStreamer = new NowStreamer();
+		}
+		if (publishDisposable == null) {
+				publishDisposable = Schedulers.newThread().scheduleDirect(new Runnable() {
+						@Override
+						public void run() {
+							  //推流本地的一个mp4文件
+								final File intputVideo = new File(getExternalFilesDir(null), "input.mp4");
+								nowStreamer.startPublish(intputVideo.getAbsolutePath(), PUBLISH_ADDRESS);
+						}
+				});
+		}
+}
+```
+
+- 编译打包运行，开始推流，我们在局域网中使用`vlc播放器`，打开网络串流
+
+`rtmp://192.168.1.102:1935/onzhou/live`
+
+![](https://github.com/byhook/ffmpeg4android/blob/master/readme/images/vlc_player.png)
+
+项目地址:
+https://github.com/byhook/ffmpeg4android
+
+参考雷神:
+https://blog.csdn.net/leixiaohua1020/article/details/47056051
