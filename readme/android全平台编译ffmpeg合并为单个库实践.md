@@ -240,7 +240,7 @@ done
 
 目录结构如下
 
-![](https://github.com/byhook/ffmpeg4android/blob/master/readme/images/media_059.png)
+![](https://github.com/byhook/ffmpeg4android/blob/master/readme/images/media_059_water.png)
 
 全部脚本地址:
 
