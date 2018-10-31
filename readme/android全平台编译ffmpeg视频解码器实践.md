@@ -1,3 +1,116 @@
+
+
+### 目录
+
+- [配置环境](#配置环境)
+- [新建decode工程](#新建decode工程)
+
+#### 配置环境
+
+`操作系统: ubuntu 16.05`
+
+`注意: ffmpeg库`的编译使用的是`android-ndk-r10e版本`，使用高版本编译会报错
+
+而`android-studio`工程中配合`cmake`使用的版本则是`android-ndk-r16b版本`
+
+
+![](https://github.com/byhook/ffmpeg4android/blob/master/readme/images/media_060_water.png)
+
+
+#### 新建工程`ffmpeg-single-hello`
+
+![](https://github.com/byhook/ffmpeg4android/blob/master/readme/images/screenshot_005_water.png)
+
+- 配置`build.gradle`如下
+
+```java
+android {
+    ......
+    defaultConfig {
+        ......
+        externalNativeBuild {
+            cmake {
+                cppFlags ""
+            }
+            ndk {
+                abiFilters "armeabi-v7a"
+            }
+        }
+        sourceSets {
+            main {
+                //库地址
+                jniLibs.srcDirs = ['libs']
+            }
+        }
+    }
+    ......
+    externalNativeBuild {
+        cmake {
+            path "CMakeLists.txt"
+        }
+    }
+}
+```
+- 新建`CMakeLists.txt文件`，配置如下
+
+```java
+
+cmake_minimum_required(VERSION 3.4.1)
+
+
+add_library(ffmpeg-decode
+           SHARED
+           src/main/cpp/ffmpeg_decode.c)
+
+find_library(log-lib
+            log)
+
+#获取上级目录
+get_filename_component(PARENT_DIR ${CMAKE_SOURCE_DIR} PATH)
+set(LIBRARY_DIR ${PARENT_DIR}/ffmpeg-single)
+
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++11")
+set(CMAKE_VERBOSE_MAKEFILE on)
+
+add_library(ffmpeg-single
+           SHARED
+           IMPORTED)
+
+set_target_properties(ffmpeg-single
+                    PROPERTIES IMPORTED_LOCATION
+                    ${LIBRARY_DIR}/libs/${ANDROID_ABI}/libffmpeg.so
+                    )
+
+#头文件
+include_directories(${LIBRARY_DIR}/libs/${ANDROID_ABI}/include)
+
+target_link_libraries(ffmpeg-decode ffmpeg-single ${log-lib})
+```
+
+- 新建类`FFmpegHello.java`
+```java
+package com.onzhou.ffmpeg.decode;
+
+/**
+ * @anchor: andy
+ * @date: 2018-10-30
+ * @description:
+ */
+public class FFmpegDecode {
+
+    static {
+        System.loadLibrary("ffmpeg");
+        System.loadLibrary("ffmpeg-decode");
+    }
+
+    public native int decode(String input, String output);
+
+}
+```
+
+- 在`src/main/cpp目录`新建源文件`ffmpeg_decode.c`
+
+```java
 #include <stdio.h>
 #include <time.h>
 
@@ -20,7 +133,7 @@
 
 
 //输出日志
-void custom_log(void *ptr, int level, const char *fmt, va_list vl) {
+void log_callback(void *ptr, int level, const char *fmt, va_list vl) {
     FILE *fp = fopen("/storage/emulated/0/Android/data/com.onzhou.ffmpeg.decode/files/av_log.txt",
                      "a+");
     if (fp) {
@@ -54,7 +167,7 @@ JNIEXPORT jint JNICALL Java_com_onzhou_ffmpeg_decode_FFmpegDecode_decode
     sprintf(output_str, "%s", (*env)->GetStringUTFChars(env, output_jstr, NULL));
 
     //日志回调
-    av_log_set_callback(custom_log);
+    av_log_set_callback(log_callback);
 
     av_register_all();
     avformat_network_init();
@@ -209,3 +322,17 @@ JNIEXPORT jint JNICALL Java_com_onzhou_ffmpeg_decode_FFmpegDecode_decode
 
     return 0;
 }
+```
+
+- 编译打包运行，`输出如下信息:`
+
+![](https://github.com/byhook/ffmpeg4android/blob/master/readme/images/decode_yuv_water.png)
+
+输出的yuv文件体积很大
+
+
+项目地址:
+https://github.com/byhook/ffmpeg4android
+
+参考雷神:
+https://blog.csdn.net/leixiaohua1020/article/details/47010637
