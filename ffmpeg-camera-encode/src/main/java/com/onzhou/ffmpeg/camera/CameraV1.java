@@ -1,20 +1,12 @@
 package com.onzhou.ffmpeg.camera;
 
 import android.app.Activity;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.ImageFormat;
-import android.graphics.Rect;
-import android.graphics.SurfaceTexture;
-import android.graphics.YuvImage;
 import android.hardware.Camera;
 import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.nio.ByteBuffer;
 
 /**
  * @anchor: andy
@@ -37,9 +29,12 @@ public class CameraV1 implements ICamera, SurfaceHolder.Callback, Camera.Preview
      */
     private int mCameraId;
 
+    private NativeFrame mNativeFrame;
+
     public void setPreviewView(SurfaceView surfaceView) {
         this.mSurfaceView = surfaceView;
         this.mCameraId = Camera.CameraInfo.CAMERA_FACING_FRONT;
+        this.mNativeFrame = new NativeFrame();
         surfaceView.getHolder().addCallback(this);
     }
 
@@ -67,7 +62,10 @@ public class CameraV1 implements ICamera, SurfaceHolder.Callback, Camera.Preview
      */
     @Override
     public void onPreviewFrame(byte[] data, Camera camera) {
-
+        if (mNativeFrame != null) {
+            Camera.Size size = camera.getParameters().getPreviewSize();
+            mNativeFrame.onPreviewFrame(data, size.width, size.height);
+        }
     }
 
     @Override
