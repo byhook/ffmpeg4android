@@ -7,12 +7,23 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+#include <libavcodec/avcodec.h>
+#include <libavformat/avformat.h>
+#include <libavutil/avutil.h>
+#include <libswscale/swscale.h>
+
 /*
  * Class:     com_onzhou_live_NativeFrame
  * Method:    onPreviewFrame
  * Signature: ([B)V
  */
 JNIEXPORT void JNICALL onPreviewFrame(JNIEnv *, jobject, jbyteArray, jint, jint);
+
+JNIEXPORT void JNICALL encodeMP4Start(JNIEnv *, jobject, jstring, jint, jint);
+
+JNIEXPORT void JNICALL encodeMP4Stop(JNIEnv *, jobject);
+
 
 #ifdef __cplusplus
 }

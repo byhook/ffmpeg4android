@@ -14,4 +14,8 @@ public interface ICamera {
 
     void onDestroy();
 
+    void encodeStart();
+
+    void encodeStop();
+
 }

@@ -1,12 +1,20 @@
 package com.onzhou.ffmpeg.camera;
 
 import android.app.Activity;
+import android.graphics.ImageFormat;
 import android.hardware.Camera;
 import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
+import com.onzhou.ffmpeg.core.AppCore;
+import com.onzhou.ffmpeg.encode.NativeEncoder;
+
+import java.io.File;
 import java.io.IOException;
+import java.security.Policy;
+
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * @anchor: andy
@@ -29,12 +37,12 @@ public class CameraV1 implements ICamera, SurfaceHolder.Callback, Camera.Preview
      */
     private int mCameraId;
 
-    private NativeFrame mNativeFrame;
+    private NativeEncoder mNativeFrame;
 
     public void setPreviewView(SurfaceView surfaceView) {
         this.mSurfaceView = surfaceView;
         this.mCameraId = Camera.CameraInfo.CAMERA_FACING_FRONT;
-        this.mNativeFrame = new NativeFrame();
+        this.mNativeFrame = new NativeEncoder();
         surfaceView.getHolder().addCallback(this);
     }
 
@@ -47,11 +55,22 @@ public class CameraV1 implements ICamera, SurfaceHolder.Callback, Camera.Preview
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
         try {
             setCameraDisplayOrientation(mCameraId, mCamera);
+            Camera.Parameters parameters = mCamera.getParameters();
+            parameters.setPreviewFormat(ImageFormat.NV21);
+            mCamera.setParameters(parameters);
             mCamera.setPreviewDisplay(holder);
             mCamera.setPreviewCallback(this);
             mCamera.startPreview();
         } catch (IOException e) {
         }
+
+        Schedulers.newThread().scheduleDirect(new Runnable() {
+            @Override
+            public void run() {
+                byte[] buffer = new byte[1024];
+                mNativeFrame.onPreviewFrame(buffer, 240, 480);
+            }
+        });
     }
 
     /**
@@ -60,11 +79,28 @@ public class CameraV1 implements ICamera, SurfaceHolder.Callback, Camera.Preview
      * @param data
      * @param camera
      */
+    Camera.Size mPreviewSize;
+
     @Override
     public void onPreviewFrame(byte[] data, Camera camera) {
+        this.mPreviewSize = camera.getParameters().getPreviewSize();
         if (mNativeFrame != null) {
-            Camera.Size size = camera.getParameters().getPreviewSize();
-            mNativeFrame.onPreviewFrame(data, size.width, size.height);
+            mNativeFrame.onPreviewFrame(data, mPreviewSize.width, mPreviewSize.height);
+        }
+    }
+
+    @Override
+    public void encodeStart() {
+        if (mNativeFrame != null && mPreviewSize != null) {
+            File file = new File(AppCore.getInstance().getContext().getExternalFilesDir(null), System.currentTimeMillis() + ".mp4");
+            mNativeFrame.encodeMP4Start(file.getAbsolutePath(), mPreviewSize.width, mPreviewSize.height);
+        }
+    }
+
+    @Override
+    public void encodeStop() {
+        if (mNativeFrame != null) {
+            mNativeFrame.encodeMP4Stop();
         }
     }
 
