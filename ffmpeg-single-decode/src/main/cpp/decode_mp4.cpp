@@ -6,7 +6,7 @@
 int MP4Decoder::InitDecoder(const char *mp4Path) {
     // 1.注册所有组件
     av_register_all();
-    // 2.
+    // 2.创建AVFormatContext结构体
     pFormatCtx = avformat_alloc_context();
 
     // 3.打开一个输入文件
