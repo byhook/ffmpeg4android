@@ -32,25 +32,18 @@ private:
     int height;
 
     AVPacket avPacket;
-
     AVFormatContext *pFormatCtx = nullptr;
-
     AVOutputFormat *fmt = nullptr;
-
-    AVStream *video_st = nullptr;
-
+    AVStream *pStream = nullptr;
     AVCodecContext *pCodecCtx = nullptr;
-
     AVCodec *pCodec = nullptr;
-
-    uint8_t *picture_buf = nullptr;
-
-    AVFrame *picture = nullptr;
+    uint8_t *pFrameBuffer = nullptr;
+    AVFrame *pFrame = nullptr;
 
     //AVFrame PTS
     int index = 0;
 
-    int FlushEncoder(AVFormatContext *fmt_ctx, unsigned int stream_index);
+    int EncodeFrame(AVCodecContext *pCodecCtx, AVFrame *pFrame, AVPacket *pPkt);
 
 public:
 
