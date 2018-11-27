@@ -1,6 +1,6 @@
 #include <jni.h>
 
-#include "native_encoder.h"
+#include "native_encode.h"
 #include "encode_mp4.h"
 
 /**

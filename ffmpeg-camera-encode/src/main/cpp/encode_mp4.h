@@ -5,7 +5,7 @@
 #ifndef FFMPEG4ANDROID_ENCODE_MP4_H
 #define FFMPEG4ANDROID_ENCODE_MP4_H
 
-#include "video_encoder.h"
+#include "video_encode.h"
 
 #ifdef __cplusplus
 extern "C" {

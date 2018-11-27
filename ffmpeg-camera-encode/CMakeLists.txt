@@ -4,8 +4,8 @@ cmake_minimum_required(VERSION 3.4.1)
 add_library(native-encode
            SHARED
            src/main/cpp/encode_mp4.cpp
-           src/main/cpp/video_encoder.cpp
-           src/main/cpp/native_encoder.cpp)
+           src/main/cpp/native_encode.cpp
+           src/main/cpp/native_encode.cpp)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++11")
 set(CMAKE_VERBOSE_MAKEFILE on)

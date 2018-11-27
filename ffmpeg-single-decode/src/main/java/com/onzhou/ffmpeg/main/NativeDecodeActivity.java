@@ -1,4 +1,4 @@
-package com.onzhou.ffmpeg.decode;
+package com.onzhou.ffmpeg.main;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -7,6 +7,8 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.onzhou.ffmpeg.base.AbsBaseActivity;
+import com.onzhou.ffmpeg.decode.NativeDecode;
+import com.onzhou.ffmpeg.decode.R;
 import com.onzhou.ffmpeg.task.AssertReleaseTask;
 
 import java.io.File;
@@ -18,11 +20,11 @@ import io.reactivex.schedulers.Schedulers;
  * @date: 2018-10-30
  * @description:
  */
-public class FFmpegDecodeActivity extends AbsBaseActivity implements AssertReleaseTask.ReleaseCallback {
+public class NativeDecodeActivity extends AbsBaseActivity implements AssertReleaseTask.ReleaseCallback {
 
     private TextView btnDecode;
 
-    private FFmpegDecode fFmpegDecode;
+    private NativeDecode nativeDecode;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -39,15 +41,15 @@ public class FFmpegDecodeActivity extends AbsBaseActivity implements AssertRelea
     }
 
     public void onDecodeClick(View view) {
-        if (fFmpegDecode == null) {
-            fFmpegDecode = new FFmpegDecode();
+        if (nativeDecode == null) {
+            nativeDecode = new NativeDecode();
         }
         btnDecode.setEnabled(false);
         final File fileDir = getExternalFilesDir(null);
         Schedulers.newThread().scheduleDirect(new Runnable() {
             @Override
             public void run() {
-                fFmpegDecode.decode(fileDir.getAbsolutePath() + "/input.mp4", fileDir.getAbsolutePath() + "/output.yuv");
+                nativeDecode.decodeMP4(fileDir.getAbsolutePath() + "/input.mp4", fileDir.getAbsolutePath() + "/output.yuv");
             }
         });
     }

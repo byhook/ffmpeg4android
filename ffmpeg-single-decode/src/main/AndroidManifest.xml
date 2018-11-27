@@ -7,7 +7,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".FFmpegDecodeActivity">
+        <activity android:name="com.onzhou.ffmpeg.main.NativeDecodeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
