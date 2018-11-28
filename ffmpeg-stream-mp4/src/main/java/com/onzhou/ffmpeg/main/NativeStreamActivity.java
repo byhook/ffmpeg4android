@@ -1,4 +1,4 @@
-package com.onzhou.ffmpeg.streamer;
+package com.onzhou.ffmpeg.main;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -7,6 +7,8 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.onzhou.ffmpeg.base.AbsBaseActivity;
+import com.onzhou.ffmpeg.streamer.NativeStreamer;
+import com.onzhou.ffmpeg.streamer.R;
 import com.onzhou.ffmpeg.task.AssertReleaseTask;
 
 import java.io.File;
@@ -19,19 +21,19 @@ import io.reactivex.schedulers.Schedulers;
  * @date: 2018-10-29
  * @description:
  */
-public class StreamActivity extends AbsBaseActivity implements AssertReleaseTask.ReleaseCallback {
+public class NativeStreamActivity extends AbsBaseActivity implements AssertReleaseTask.ReleaseCallback {
 
     /**
      * 推流地址
      */
-    private static final String PUBLISH_ADDRESS = "rtmp://192.168.1.102:1935/onzhou/live";
+    private static final String PUBLISH_ADDRESS = "rtmp://192.168.1.24:1935/onzhou/live";
 
     /**
      * 开始推流按钮
      */
-    private TextView mBtnStartPublish;
+    private TextView mBtnStartPublish, mBtnStopPublish;
 
-    private NowStreamer nowStreamer;
+    private NativeStreamer nowStreamer;
 
     private Disposable publishDisposable;
 
@@ -59,6 +61,7 @@ public class StreamActivity extends AbsBaseActivity implements AssertReleaseTask
 
     private void setupViews() {
         mBtnStartPublish = (TextView) findViewById(R.id.btn_start_publish);
+        mBtnStopPublish = (TextView) findViewById(R.id.btn_stop_publish);
     }
 
     public void setupVideo() {
@@ -72,19 +75,31 @@ public class StreamActivity extends AbsBaseActivity implements AssertReleaseTask
     }
 
     public void onStartClick(View view) {
+        mBtnStartPublish.setEnabled(false);
+        mBtnStopPublish.setEnabled(true);
         if (nowStreamer == null) {
-            nowStreamer = new NowStreamer();
+            nowStreamer = new NativeStreamer();
         }
         if (publishDisposable == null) {
             publishDisposable = Schedulers.newThread().scheduleDirect(new Runnable() {
                 @Override
                 public void run() {
-                    final File intputVideo = new File(getExternalFilesDir(null), "input.mp4");
-                    nowStreamer.startPublish(intputVideo.getAbsolutePath(), PUBLISH_ADDRESS);
+                    final File inputVideo = new File(getExternalFilesDir(null), "input.mp4");
+                    nowStreamer.startPublish(inputVideo.getAbsolutePath(), PUBLISH_ADDRESS);
                 }
             });
         }
     }
 
-
+    public void onStopClick(View view) {
+        if (nowStreamer != null) {
+            nowStreamer.stopPublish();
+        }
+        if (publishDisposable != null) {
+            publishDisposable.dispose();
+            publishDisposable = null;
+        }
+        mBtnStartPublish.setEnabled(true);
+        mBtnStopPublish.setEnabled(false);
+    }
 }

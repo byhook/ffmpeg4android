@@ -12,4 +12,13 @@
         android:onClick="onStartClick"
         android:text="开始推流" />
 
+    <Button
+        android:id="@+id/btn_stop_publish"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:enabled="false"
+        android:onClick="onStopClick"
+        android:text="停止推流" />
+
+
 </LinearLayout>
