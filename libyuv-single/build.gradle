@@ -1,4 +1,4 @@
-apply plugin: 'com.android.application'
+apply plugin: 'com.android.library'
 
 android {
     //构建版本
@@ -10,19 +10,9 @@ android {
         targetSdkVersion rootProject.ext.android.targetSdkVersion
         versionCode rootProject.ext.android.versionCode
         versionName rootProject.ext.android.versionName
-        externalNativeBuild {
-            cmake {
-                cppFlags ""
-            }
-            ndk {
-                abiFilters "armeabi-v7a"
-            }
-        }
-        sourceSets {
-            main {
-                //库地址
-                jniLibs.srcDirs = ['libs']
-            }
+
+        ndk {
+            abiFilters "armeabi-v7a"
         }
     }
     buildTypes {
@@ -31,9 +21,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-    externalNativeBuild {
-        cmake {
-            path "CMakeLists.txt"
+    sourceSets {
+        main {
+            //库地址
+            jniLibs.srcDirs = ['libs']
         }
     }
 }
@@ -41,9 +32,6 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
 
-    compile project(':common')
-    compile project(':libyuv-single')
-    compile project(':ffmpeg-single')
     compile rootProject.ext.dependencies["appcompat-v7"]
     compile rootProject.ext.dependencies["design"]
 }
