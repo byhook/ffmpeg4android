@@ -33,11 +33,12 @@ int start_publish(const char *mp4Path, const char *stream) {
     }
     //遍历视频轨
     int videoIndex = -1;
-    for (int index = 0; index < in_fmt->nb_streams; index++)
+    for (int index = 0; index < in_fmt->nb_streams; index++){
         if (in_fmt->streams[index]->codecpar->codec_type == AVMEDIA_TYPE_VIDEO) {
             videoIndex = index;
             break;
         }
+    }
     //5.初始化输出码流的AVFormatContext
     avformat_alloc_output_context2(&out_fmt, NULL, "flv", stream); //RTMP
     if (!out_fmt) {

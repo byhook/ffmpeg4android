@@ -1,4 +1,4 @@
-package com.onzhou.ffmpeg.play;
+package com.onzhou.ffmpeg.main;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -9,6 +9,8 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.onzhou.ffmpeg.base.AbsBaseActivity;
+import com.onzhou.ffmpeg.player.NativePlayer;
+import com.onzhou.ffmpeg.play.R;
 import com.onzhou.ffmpeg.task.AssertReleaseTask;
 
 import java.io.File;
@@ -20,9 +22,9 @@ import io.reactivex.schedulers.Schedulers;
  * @date: 2018-10-31
  * @description:
  */
-public class FFmpegPlayActivity extends AbsBaseActivity implements AssertReleaseTask.ReleaseCallback {
+public class NativePlayActivity extends AbsBaseActivity implements AssertReleaseTask.ReleaseCallback {
 
-    private FFmpegPlay fFmpegPlay;
+    private NativePlayer fFmpegPlay;
 
     private TextView btnPlay;
 
@@ -69,7 +71,7 @@ public class FFmpegPlayActivity extends AbsBaseActivity implements AssertRelease
 
     public void onPlayClick(View view) {
         if (fFmpegPlay == null) {
-            fFmpegPlay = new FFmpegPlay();
+            fFmpegPlay = new NativePlayer();
         }
         btnPlay.setEnabled(false);
         final File videoFile = getExternalFilesDir(null);
