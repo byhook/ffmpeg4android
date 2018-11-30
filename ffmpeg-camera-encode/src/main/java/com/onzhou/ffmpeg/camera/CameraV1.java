@@ -90,10 +90,9 @@ public class CameraV1 implements ICamera, SurfaceHolder.Callback, Camera.Preview
     }
 
     @Override
-    public void encodeStart() {
+    public void encodeStart(String outputPath) {
         if (mNativeFrame != null && mPreviewSize != null) {
-            File file = new File(AppCore.getInstance().getContext().getExternalFilesDir(null), System.currentTimeMillis() + ".mp4");
-            mNativeFrame.encodeMP4Start(file.getAbsolutePath(), mPreviewSize.width, mPreviewSize.height);
+            mNativeFrame.encodeMP4Start(outputPath, mPreviewSize.width, mPreviewSize.height);
         }
     }
 

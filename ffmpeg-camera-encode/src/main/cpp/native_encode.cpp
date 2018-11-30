@@ -1,7 +1,7 @@
 #include <jni.h>
 
 #include "native_encode.h"
-#include "encode_mp4.h"
+#include "mp4_encode.h"
 
 /**
  * 动态注册
@@ -44,7 +44,7 @@ jint JNI_OnLoad(JavaVM *vm, void *reserved) {
 }
 
 
-VideoEncoder *videoEncoder = NULL;
+VideoEncoder *videoPublisher = NULL;
 
 /**
  * 编码开始
@@ -57,11 +57,11 @@ VideoEncoder *videoEncoder = NULL;
 void encodeMP4Start(JNIEnv *env, jobject obj, jstring jmp4Path, jint width, jint height) {
     const char *mp4Path = env->GetStringUTFChars(jmp4Path, NULL);
 
-    if (videoEncoder == NULL) {
-        videoEncoder = new MP4Encoder();
+    if (videoPublisher == NULL) {
+        videoPublisher = new MP4Encoder();
     }
-    videoEncoder->InitEncoder(mp4Path, width, height);
-    videoEncoder->EncodeStart();
+    videoPublisher->InitEncoder(mp4Path, width, height);
+    videoPublisher->EncodeStart();
 
     env->ReleaseStringUTFChars(jmp4Path, mp4Path);
 }
@@ -75,9 +75,9 @@ void encodeMP4Start(JNIEnv *env, jobject obj, jstring jmp4Path, jint width, jint
  * @param height
  */
 void encodeMP4Stop(JNIEnv *env, jobject obj) {
-    if (NULL != videoEncoder) {
-        videoEncoder->EncodeStop();
-        videoEncoder = NULL;
+    if (NULL != videoPublisher) {
+        videoPublisher->EncodeStop();
+        videoPublisher = NULL;
     }
 }
 
@@ -91,9 +91,9 @@ void encodeMP4Stop(JNIEnv *env, jobject obj) {
  */
 void onPreviewFrame(JNIEnv *env, jobject obj, jbyteArray yuvArray, jint width,
                     jint height) {
-    if (NULL != videoEncoder && videoEncoder->isTransform()) {
+    if (NULL != videoPublisher && videoPublisher->isTransform()) {
         jbyte *yuv420Buffer = env->GetByteArrayElements(yuvArray, 0);
-        videoEncoder->EncodeBuffer((unsigned char *) yuv420Buffer);
+        videoPublisher->EncodeBuffer((unsigned char *) yuv420Buffer);
         env->ReleaseByteArrayElements(yuvArray, yuv420Buffer, 0);
     }
 }

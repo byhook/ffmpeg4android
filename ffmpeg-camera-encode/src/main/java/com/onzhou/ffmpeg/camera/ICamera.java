@@ -3,6 +3,8 @@ package com.onzhou.ffmpeg.camera;
 import android.graphics.SurfaceTexture;
 import android.view.SurfaceView;
 
+import com.onzhou.ffmpeg.encode.NativeEncoder;
+
 /**
  * @anchor: andy
  * @date: 2018-11-12
@@ -14,7 +16,7 @@ public interface ICamera {
 
     void onDestroy();
 
-    void encodeStart();
+    void encodeStart(String outputPath);
 
     void encodeStop();
 

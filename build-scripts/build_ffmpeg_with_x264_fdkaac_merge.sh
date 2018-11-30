@@ -42,12 +42,13 @@ X264_LIB=$LIBS_DIR/libx264/$AOSP_ABI/lib
 --enable-small \
 --disable-vda \
 --disable-iconv \
---disable-encoders \
 --enable-libx264 \
 --enable-neon \
 --enable-yasm \
 --enable-libfdk_aac \
+--disable-encoders \
 --enable-encoder=libx264 \
+--enable-encoder=mpeg4 \
 --enable-encoder=libfdk_aac \
 --enable-encoder=mjpeg \
 --enable-encoder=png \
@@ -79,17 +80,15 @@ X264_LIB=$LIBS_DIR/libx264/$AOSP_ABI/lib
 --enable-protocols \
 --enable-zlib \
 --enable-avfilter \
+--enable-avresample \
+--enable-postproc \
+--enable-avdevice \
 --disable-outdevs \
 --disable-ffprobe \
 --disable-ffplay \
 --disable-ffmpeg \
 --disable-ffserver \
 --disable-debug \
---disable-ffprobe \
---disable-ffplay \
---disable-ffmpeg \
---disable-postproc \
---disable-avdevice \
 --disable-symver \
 --disable-stripping \
 --extra-cflags="$FF_EXTRA_CFLAGS  $FF_CFLAGS" \
@@ -107,6 +106,7 @@ $TOOLCHAIN/bin/$TOOLNAME_BASE-ld -rpath-link=$PLATFORM/usr/lib -L$PLATFORM/usr/l
     $X264_LIB/libx264.a \
     libavcodec/libavcodec.a \
     libavfilter/libavfilter.a \
+    libavresample/libavresample.a \
     libswresample/libswresample.a \
     libavformat/libavformat.a \
     libavutil/libavutil.a \
@@ -116,4 +116,3 @@ $TOOLCHAIN/bin/$TOOLNAME_BASE-ld -rpath-link=$PLATFORM/usr/lib -L$PLATFORM/usr/l
     -lc -lm -lz -ldl -llog --dynamic-linker=/system/bin/linker $TOOLCHAIN/lib/gcc/$TOOLNAME_BASE/4.9/libgcc.a
 
 cd ..
-

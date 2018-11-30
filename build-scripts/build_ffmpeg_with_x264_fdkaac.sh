@@ -35,8 +35,9 @@ X264_LIB=$LIBS_DIR/libx264/$AOSP_ABI/lib
 --extra-ldflags="-L$FDK_LIB -L$X264_LIB" \
 --enable-gpl \
 --enable-nonfree \
---enable-shared \
---disable-static \
+--disable-shared \
+--enable-static \
+--enable-small \
 --enable-version3 \
 --enable-pthreads \
 --enable-small \
@@ -73,6 +74,8 @@ X264_LIB=$LIBS_DIR/libx264/$AOSP_ABI/lib
 --enable-protocols \
 --enable-zlib \
 --enable-avfilter \
+--enable-postproc \
+--enable-avdevice \
 --disable-outdevs \
 --disable-ffprobe \
 --disable-ffplay \
@@ -82,8 +85,6 @@ X264_LIB=$LIBS_DIR/libx264/$AOSP_ABI/lib
 --disable-ffprobe \
 --disable-ffplay \
 --disable-ffmpeg \
---disable-postproc \
---disable-avdevice \
 --disable-symver \
 --disable-stripping \
 --extra-cflags="$FF_EXTRA_CFLAGS  $FF_CFLAGS" \
@@ -92,6 +93,23 @@ X264_LIB=$LIBS_DIR/libx264/$AOSP_ABI/lib
 make clean
 make -j8
 make install
+
+
+# 这段解释见后文
+$TOOLCHAIN/bin/$TOOLNAME_BASE-ld -rpath-link=$PLATFORM/usr/lib -L$PLATFORM/usr/lib -L$PREFIX/lib -soname libffmpeg.so -shared -nostdlib -Bsymbolic --whole-archive --no-undefined -o $PREFIX/libffmpeg.so \
+    $FDK_LIB/libfdk-aac.a \
+    $X264_LIB/libx264.a \
+    libavcodec/libavcodec.a \
+    libavfilter/libavfilter.a \
+    libavresample/libavresample.a \
+    libswresample/libswresample.a \
+    libavformat/libavformat.a \
+    libavutil/libavutil.a \
+    libswscale/libswscale.a \
+    libpostproc/libpostproc.a \
+    libavdevice/libavdevice.a \
+    -lc -lm -lz -ldl -llog --dynamic-linker=/system/bin/linker $TOOLCHAIN/lib/gcc/$TOOLNAME_BASE/4.9/libgcc.a
+
 
 cd ..
 

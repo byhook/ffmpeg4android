@@ -1,6 +1,3 @@
-//
-// Created by byhook on 18-11-26.
-//
 
 #ifndef ANDROID_VIDEO_ENCODER_H
 #define ANDROID_VIDEO_ENCODER_H

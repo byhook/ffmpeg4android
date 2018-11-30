@@ -12,9 +12,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.onzhou.camera.encode.R;
 import com.onzhou.ffmpeg.base.AbsBaseActivity;
 import com.onzhou.ffmpeg.camera.CameraV1;
-import com.onzhou.ffmpeg.encode.R;
+import com.onzhou.ffmpeg.core.AppCore;
+
+import java.io.File;
 
 /**
  * @anchor: andy
@@ -73,7 +76,10 @@ public class CameraSurfaceActivity extends AbsBaseActivity {
     public void onEncodeStart(View view) {
         mBtnEncodeStartMP4.setEnabled(false);
         mBtnEncodeStopMP4.setEnabled(true);
-        mCameraV1.encodeStart();
+
+        //".h264"
+        File outputFile = new File(AppCore.getInstance().getContext().getExternalFilesDir(null), System.currentTimeMillis() + ".mp4");
+        mCameraV1.encodeStart(outputFile.getAbsolutePath());
     }
 
     public void onEncodeStop(View view) {

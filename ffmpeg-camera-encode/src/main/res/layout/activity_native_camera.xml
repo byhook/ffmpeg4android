@@ -12,7 +12,6 @@
         android:onClick="onEncodeStart"
         android:text="开始编码MP4" />
 
-
     <Button
         android:id="@+id/btn_encode_mp4_stop"
         android:layout_width="match_parent"
