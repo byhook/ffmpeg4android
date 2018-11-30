@@ -18,7 +18,7 @@ JNINativeMethod methods[] = {
  * @return
  */
 jint registerNativeMethod(JNIEnv *env) {
-    jclass cl = env->FindClass("com/onzhou/audio/lame/LameEncoder");
+    jclass cl = env->FindClass("com/onzhou/lame/encode/LameEncoder");
     if ((env->RegisterNatives(cl, methods, sizeof(methods) / sizeof(methods[0]))) < 0) {
         return -1;
     }

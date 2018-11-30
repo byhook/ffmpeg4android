@@ -1,4 +1,4 @@
-package com.onzhou.audio.lame;
+package com.onzhou.lame.encode;
 
 /**
  * @anchor: andy
