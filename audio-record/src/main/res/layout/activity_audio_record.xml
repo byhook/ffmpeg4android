@@ -8,6 +8,7 @@
         android:id="@+id/btn_record_start"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:enabled="false"
         android:onClick="onRecordStart"
         android:text="开始录音" />
 
@@ -16,6 +17,7 @@
         android:id="@+id/btn_record_stop"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:enabled="false"
         android:onClick="onRecordStop"
         android:text="停止录音" />
 
