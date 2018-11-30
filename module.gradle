@@ -1,0 +1,82 @@
+apply plugin: 'com.android.application'
+
+android {
+    //构建版本
+    compileSdkVersion rootProject.ext.android.compileSdkVersion
+    buildToolsVersion rootProject.ext.android.buildToolsVersion
+    signingConfigs {
+        config {
+            Properties buildProps = loadSignProperties()
+            storeFile file(buildProps['STORE_FILE'])
+            keyAlias buildProps['KEY_ALIAS']
+            keyPassword buildProps['KEY_PASSWORD']
+            storePassword buildProps['STORE_PASSWORD']
+        }
+    }
+    buildTypes {
+        debug {
+            signingConfig signingConfigs.config
+        }
+        release {
+            signingConfig signingConfigs.config
+            minifyEnabled true
+            zipAlignEnabled true
+            debuggable false
+            jniDebuggable false
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    //默认的配置
+    defaultConfig {
+        minSdkVersion rootProject.ext.android.minSdkVersion
+        targetSdkVersion rootProject.ext.android.targetSdkVersion
+        versionCode rootProject.ext.android.versionCode
+        versionName rootProject.ext.android.versionName
+        externalNativeBuild {
+            cmake {
+                cppFlags ""
+            }
+            ndk {
+                abiFilters "armeabi-v7a"
+            }
+        }
+        sourceSets {
+            main {
+                //库地址
+                jniLibs.srcDirs = ['libs']
+            }
+        }
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    externalNativeBuild {
+        cmake {
+            path "CMakeLists.txt"
+        }
+    }
+
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    testCompile 'junit:junit:4.12'
+    compile rootProject.ext.dependencies["appcompat-v7"]
+    compile rootProject.ext.dependencies["design"]
+    compile project(':common')
+    compile project(':ffmpeg-single')
+}
+
+/**
+ * 读取配置签名
+ * @return
+ */
+def loadSignProperties() {
+    Properties buildProperties = new Properties()
+    buildProperties.load(new FileInputStream(file("$rootDir/config/sign.properties")))
+    return buildProperties
+}
