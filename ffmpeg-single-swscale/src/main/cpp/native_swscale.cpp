@@ -11,12 +11,12 @@ int NativeSwscale::Transform(const char *videoPath, const char *outputPath) {
 
     // 3.打开一个输入文件
     if (avformat_open_input(&pFormatCtx, videoPath, NULL, NULL) != 0) {
-        LOGE("could not open input stream");
+        LOGE("Could not open input stream");
         goto end_line;
     }
     // 4.获取媒体的信息
     if (avformat_find_stream_info(pFormatCtx, NULL) < 0) {
-        LOGE("could not find stream information");
+        LOGE("Could not find stream information");
         goto end_line;
     }
     //获取视频轨的下标
@@ -26,13 +26,13 @@ int NativeSwscale::Transform(const char *videoPath, const char *outputPath) {
             break;
         }
     if (videoIndex == -1) {
-        LOGE("could not find a video stream");
+        LOGE("Could not find a video stream");
         goto end_line;
     }
     // 5.查找解码器
     pCodec = avcodec_find_decoder(pFormatCtx->streams[videoIndex]->codecpar->codec_id);
     if (pCodec == NULL) {
-        LOGE("could not find Codec");
+        LOGE("Could not find Codec");
         goto end_line;
     }
 
@@ -42,7 +42,7 @@ int NativeSwscale::Transform(const char *videoPath, const char *outputPath) {
     pCodecCtx->thread_count = 1;
 
     if (avcodec_open2(pCodecCtx, pCodec, NULL) < 0) {
-        LOGE("could not open codec");
+        LOGE("Could not open codec");
         goto end_line;
     }
 
@@ -64,6 +64,17 @@ int NativeSwscale::Transform(const char *videoPath, const char *outputPath) {
     av_image_fill_arrays(pFrameYUV->data, pFrameYUV->linesize, out_buffer, AV_PIX_FMT_RGB24,
                          pCodecCtx->width, pCodecCtx->height, 1);*/
 
+
+    //转换
+    sws_ctx = sws_getContext(pCodecCtx->width,
+                             pCodecCtx->height,
+                             pCodecCtx->pix_fmt,
+                             pCodecCtx->width,
+                             pCodecCtx->height,
+                             AV_PIX_FMT_YUV420P, //AV_PIX_FMT_RGB24
+                             SWS_BICUBIC,
+                             NULL, NULL, NULL);
+
     outputFile = fopen(outputPath, "wb+");
 
     while (av_read_frame(pFormatCtx, vPacket) >= 0) {
@@ -72,15 +83,7 @@ int NativeSwscale::Transform(const char *videoPath, const char *outputPath) {
                 return -1;
             }
             while (avcodec_receive_frame(pCodecCtx, pFrame) == 0) {
-                //转换
-                sws_ctx = sws_getContext(pCodecCtx->width,
-                                         pCodecCtx->height,
-                                         pCodecCtx->pix_fmt,
-                                         pCodecCtx->width,
-                                         pCodecCtx->height,
-                                         AV_PIX_FMT_YUV420P, //AV_PIX_FMT_RGB24
-                                         SWS_BICUBIC,
-                                         NULL, NULL, NULL);
+
                 sws_scale(sws_ctx, (const uint8_t *const *) pFrame->data, pFrame->linesize,
                           0, pCodecCtx->height, pFrameYUV->data, pFrameYUV->linesize);
 
@@ -105,25 +108,16 @@ int NativeSwscale::Transform(const char *videoPath, const char *outputPath) {
         outputFile = NULL;
     }
 
+    sws_freeContext(sws_ctx);
+
     end_line:
 
-    if (pCodecCtx != NULL) {
-        avcodec_close(pCodecCtx);
-        avcodec_free_context(&pCodecCtx);
-        pCodecCtx = NULL;
-    }
-    if (pFrame != NULL) {
-        av_free(pFrame);
-        pFrame = NULL;
-    }
-    if (pFrameYUV != NULL) {
-        av_free(pFrameYUV);
-        pFrameYUV = NULL;
-    }
-    if (pFormatCtx != NULL) {
-        avformat_close_input(&pFormatCtx);
-        avformat_free_context(pFormatCtx);
-        pFormatCtx = NULL;
-    }
+    avcodec_close(pCodecCtx);
+    avcodec_free_context(&pCodecCtx);
+    av_free(pFrame);
+    av_free(pFrameYUV);
+
+    avformat_close_input(&pFormatCtx);
+    avformat_free_context(pFormatCtx);
     return 0;
 }
