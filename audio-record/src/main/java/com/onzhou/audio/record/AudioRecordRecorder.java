@@ -9,7 +9,11 @@ import android.media.AudioFormat;
 import android.media.AudioRecord;
 import android.media.MediaRecorder;
 
-public class AudioRecordRecorder {
+/**
+ * @anchor: andy
+ * @date: 18-12-1
+ */
+public class AudioRecordRecorder implements IAudioRecorder {
 
     private static final String TAG = "AudioRecordRecorder";
 
@@ -40,44 +44,62 @@ public class AudioRecordRecorder {
      */
     private Thread recordThread;
 
+    /**
+     * 输出流
+     */
+    private FileOutputStream outputStream;
+
+    /**
+     * 输出的文件路径
+     */
+    private String pcmPath;
+
+    /**
+     * 缓冲区大小
+     */
     private int bufferSize = 0;
 
+    /**
+     * 是否正在录制
+     */
     private boolean isRecording = false;
 
-    public void initRecorder(String filePath, int sampleSize, int channel, int format) {
+    @Override
+    public void initRecorder(String filePath) {
         this.pcmPath = filePath;
         if (null != audioRecord) {
             audioRecord.release();
         }
         try {
-            bufferSize = AudioRecord.getMinBufferSize(sampleSize, channel, format);
-            audioRecord = new AudioRecord(AUDIO_SOURCE, sampleSize, channel, format, bufferSize);
+            bufferSize = AudioRecord.getMinBufferSize(SAMPLE_RATE, CHANNEL, AUDIO_FORMAT);
+            audioRecord = new AudioRecord(AUDIO_SOURCE, SAMPLE_RATE, CHANNEL, AUDIO_FORMAT, bufferSize);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private FileOutputStream outputStream;
-    private String pcmPath;
-
-    public boolean recordStart() {
-        if (audioRecord != null && audioRecord.getState() == AudioRecord.STATE_INITIALIZED) {
+    @Override
+    public int recordStart() {
+        if (isRecording) {
+            return RECORD_STATE.STATE_RECORDING;
+        } else if (audioRecord != null && audioRecord.getState() == AudioRecord.STATE_INITIALIZED) {
             try {
                 audioRecord.startRecording();
                 isRecording = true;
                 recordThread = new Thread(new AudioRecordRunnable());
                 recordThread.start();
-                return true;
+                return RECORD_STATE.STATE_SUCCESS;
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-        return false;
+        return RECORD_STATE.STATE_ERROR;
     }
 
     /**
      * 停止音频录制
      */
+    @Override
     public void recordStop() {
         try {
             if (audioRecord != null) {
@@ -99,11 +121,13 @@ public class AudioRecordRecorder {
     }
 
     private void recordRelease() {
-        if (audioRecord.getState() == AudioRecord.STATE_INITIALIZED) {
-            audioRecord.stop();
+        if (audioRecord != null) {
+            if (audioRecord.getState() == AudioRecord.STATE_INITIALIZED) {
+                audioRecord.stop();
+            }
+            audioRecord.release();
+            audioRecord = null;
         }
-        audioRecord.release();
-        audioRecord = null;
     }
 
     private class AudioRecordRunnable implements Runnable {

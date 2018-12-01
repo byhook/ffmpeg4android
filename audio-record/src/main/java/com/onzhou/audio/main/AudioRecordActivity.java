@@ -10,6 +10,8 @@ import android.view.View;
 import android.widget.Button;
 
 import com.onzhou.audio.record.AudioRecordRecorder;
+import com.onzhou.audio.record.IAudioRecorder;
+import com.onzhou.audio.record.MediaRecordRecorder;
 import com.onzhou.audio.record.R;
 import com.onzhou.ffmpeg.base.AbsBaseActivity;
 
@@ -26,7 +28,7 @@ public class AudioRecordActivity extends AbsBaseActivity {
 
     private Button mBtnStart, mBtnStop;
 
-    private AudioRecordRecorder audioRecorder;
+    private IAudioRecorder audioRecorder;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -69,7 +71,7 @@ public class AudioRecordActivity extends AbsBaseActivity {
             audioRecorder = new AudioRecordRecorder();
         }
         File audioFile = new File(getExternalFilesDir(null), "output.pcm");
-        audioRecorder.initRecorder(audioFile.getAbsolutePath(), AudioRecordRecorder.SAMPLE_RATE, AudioRecordRecorder.CHANNEL, AudioRecordRecorder.AUDIO_FORMAT);
+        audioRecorder.initRecorder(audioFile.getAbsolutePath());
         audioRecorder.recordStart();
         //更新按钮状态
         mBtnStart.setEnabled(false);
