@@ -18,6 +18,7 @@ JNIEXPORT void JNICALL encodeMP4Start(JNIEnv *, jobject, jstring, jint, jint);
 
 JNIEXPORT void JNICALL encodeMP4Stop(JNIEnv *, jobject);
 
+JNIEXPORT void JNICALL encodeJPEG(JNIEnv *, jobject, jstring, jint, jint);
 
 #ifdef __cplusplus
 }

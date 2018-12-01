@@ -90,6 +90,13 @@ public class CameraV1 implements ICamera, SurfaceHolder.Callback, Camera.Preview
     }
 
     @Override
+    public void encodeJPEG(String jpegPath) {
+        if (mNativeFrame != null && mPreviewSize != null) {
+            mNativeFrame.encodeJPEG(jpegPath, mPreviewSize.width, mPreviewSize.height);
+        }
+    }
+
+    @Override
     public void encodeStart(String outputPath) {
         if (mNativeFrame != null && mPreviewSize != null) {
             mNativeFrame.encodeMP4Start(outputPath, mPreviewSize.width, mPreviewSize.height);

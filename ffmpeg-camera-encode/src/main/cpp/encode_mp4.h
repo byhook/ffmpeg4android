@@ -2,7 +2,7 @@
 #ifndef MP4_ENCODER_H
 #define MP4_ENCODER_H
 
-#include "video_encode.h"
+#include "encode_video.h"
 
 #ifdef __cplusplus
 extern "C" {

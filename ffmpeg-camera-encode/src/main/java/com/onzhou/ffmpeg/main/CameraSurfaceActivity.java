@@ -78,7 +78,7 @@ public class CameraSurfaceActivity extends AbsBaseActivity {
         mBtnEncodeStopMP4.setEnabled(true);
 
         //".h264"
-        File outputFile = new File(AppCore.getInstance().getContext().getExternalFilesDir(null), System.currentTimeMillis() + ".mp4");
+        File outputFile = new File(getExternalFilesDir(null), System.currentTimeMillis() + ".mp4");
         mCameraV1.encodeStart(outputFile.getAbsolutePath());
     }
 
@@ -97,4 +97,10 @@ public class CameraSurfaceActivity extends AbsBaseActivity {
         }
     }
 
+    public void onEncodeJPEG(View view) {
+        if (mCameraV1 != null) {
+            File outputFile = new File(getExternalFilesDir(null), System.currentTimeMillis() + ".jpeg");
+            mCameraV1.encodeJPEG(outputFile.getAbsolutePath());
+        }
+    }
 }

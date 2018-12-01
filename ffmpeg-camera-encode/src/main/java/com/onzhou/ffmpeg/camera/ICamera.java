@@ -20,4 +20,6 @@ public interface ICamera {
 
     void encodeStop();
 
+    void encodeJPEG(String jpegPath);
+
 }

@@ -17,4 +17,6 @@ public class NativeEncoder {
 
     public native void onPreviewFrame(byte[] yuvData, int width, int height);
 
+    public native void encodeJPEG(String jpegPath, int width, int height);
+
 }

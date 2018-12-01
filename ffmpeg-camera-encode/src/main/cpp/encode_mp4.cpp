@@ -1,7 +1,7 @@
 
 #include <libyuv.h>
 #include "logger.h"
-#include "mp4_encode.h"
+#include "encode_mp4.h"
 
 void MP4Encoder::InitEncoder(const char *mp4Path, int width, int height) {
     this->mp4Path = mp4Path;

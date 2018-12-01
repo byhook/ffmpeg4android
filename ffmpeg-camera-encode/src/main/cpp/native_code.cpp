@@ -1,15 +1,17 @@
 #include <jni.h>
 
-#include "native_encode.h"
-#include "mp4_encode.h"
+#include "native_code.h"
+#include "encode_mp4.h"
+#include "encode_jpeg.h"
 
 /**
  * 动态注册
  */
 JNINativeMethod methods[] = {
         {"onPreviewFrame", "([BII)V",                 (void *) onPreviewFrame},
-        {"encodeMP4Start",   "(Ljava/lang/String;II)V", (void *) encodeMP4Start},
-        {"encodeMP4Stop",    "()V", (void *) encodeMP4Stop}
+        {"encodeMP4Start", "(Ljava/lang/String;II)V", (void *) encodeMP4Start},
+        {"encodeMP4Stop",  "()V",                     (void *) encodeMP4Stop},
+        {"encodeJPEG",     "(Ljava/lang/String;II)V", (void *) encodeJPEG}
 };
 
 /**
@@ -81,6 +83,25 @@ void encodeMP4Stop(JNIEnv *env, jobject obj) {
     }
 }
 
+
+JPEGEncoder *jpegEncoder = NULL;
+
+/**
+ *
+ * @param env
+ * @param obj
+ * @param jmp4Path
+ * @param width
+ * @param height
+ */
+void encodeJPEG(JNIEnv *env, jobject obj, jstring jjpegPath, jint width, jint height) {
+    if (NULL == jpegEncoder) {
+        const char *jpegPath = env->GetStringUTFChars(jjpegPath, NULL);
+        jpegEncoder = new JPEGEncoder(jpegPath, width, height);
+        env->ReleaseStringUTFChars(jjpegPath, jpegPath);
+    }
+}
+
 /**
  * 处理相机回调的预览数据
  * @param env
@@ -96,4 +117,16 @@ void onPreviewFrame(JNIEnv *env, jobject obj, jbyteArray yuvArray, jint width,
         videoPublisher->EncodeBuffer((unsigned char *) yuv420Buffer);
         env->ReleaseByteArrayElements(yuvArray, yuv420Buffer, 0);
     }
+
+    if (NULL != jpegEncoder) {
+        if (jpegEncoder->isTransform()) {
+            jbyte *yuv420Buffer = env->GetByteArrayElements(yuvArray, 0);
+            jpegEncoder->EncodeJPEG((unsigned char *) yuv420Buffer);
+            env->ReleaseByteArrayElements(yuvArray, yuv420Buffer, 0);
+        }
+        //释放
+        delete jpegEncoder;
+        jpegEncoder = NULL;
+    }
+
 }
