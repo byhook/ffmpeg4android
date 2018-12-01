@@ -8,8 +8,6 @@
 
 
 int NativePlayer::PlayVideo(const char *input_str, ANativeWindow *nativeWindow) {
-    int i;
-    AVCodec *vCodec;
     //1.初始化所有组件
     av_register_all();
     //分配一个AVFormatContext结构
@@ -25,9 +23,9 @@ int NativePlayer::PlayVideo(const char *input_str, ANativeWindow *nativeWindow) 
         goto end_line;
     }
     //4.查找视频轨
-    for (i = 0; i < pFormatCtx->nb_streams; i++) {
-        if (pFormatCtx->streams[i]->codecpar->codec_type == AVMEDIA_TYPE_VIDEO) {
-            videoIndex = i;
+    for (int index = 0; index < pFormatCtx->nb_streams; index++) {
+        if (pFormatCtx->streams[index]->codecpar->codec_type == AVMEDIA_TYPE_VIDEO) {
+            videoIndex = index;
             break;
         }
     }
@@ -57,8 +55,8 @@ int NativePlayer::PlayVideo(const char *input_str, ANativeWindow *nativeWindow) 
     pFrameRGBA = av_frame_alloc();
     //绑定输出buffer
     bufferSize = av_image_get_buffer_size(AV_PIX_FMT_RGBA, width, height, 1);
-    v_out_buffer = (uint8_t *) av_malloc(bufferSize * sizeof(uint8_t));
-    av_image_fill_arrays(pFrameRGBA->data, pFrameRGBA->linesize, v_out_buffer, AV_PIX_FMT_RGBA,
+    out_buffer = (uint8_t *) av_malloc(bufferSize * sizeof(uint8_t));
+    av_image_fill_arrays(pFrameRGBA->data, pFrameRGBA->linesize, out_buffer, AV_PIX_FMT_RGBA,
                          width, height, 1);
     sws_ctx = sws_getContext(width, height, vCodecCtx->pix_fmt,
                                      width, height, AV_PIX_FMT_RGBA, SWS_BICUBIC, NULL, NULL, NULL);
@@ -89,7 +87,7 @@ int NativePlayer::PlayVideo(const char *input_str, ANativeWindow *nativeWindow) 
                     uint8_t *bufferBits = (uint8_t *) windowBuffer.bits;
                     for (int h = 0; h < height; h++) {
                         memcpy(bufferBits + h * windowBuffer.stride * 4,
-                               v_out_buffer + h * pFrameRGBA->linesize[0],
+                               out_buffer + h * pFrameRGBA->linesize[0],
                                pFrameRGBA->linesize[0]);
                     }
                     ANativeWindow_unlockAndPost(nativeWindow);

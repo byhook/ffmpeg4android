@@ -35,8 +35,11 @@ private:
     AVCodecContext *vCodecCtx = NULL;
     SwsContext *sws_ctx = NULL;
     AVFormatContext *pFormatCtx = NULL;
-    uint8_t *v_out_buffer = NULL;
+    uint8_t *out_buffer = NULL;
     ANativeWindow_Buffer windowBuffer;
+
+    AVCodec *vCodec = NULL;
+
 public:
 
     int PlayVideo(const char *input_str, ANativeWindow *nativeWindow);
