@@ -4,6 +4,12 @@
 
 ![](https://github.com/byhook/ffmpeg4android/blob/master/readme/images/ffmpeg-logo.png)
 
+## 环境配置
+
+- 操作系统：`ubuntu 16.05`
+- ndk版本：`android-ndk-r16b`
+- ffmpeg版本：`ffmpeg-3.3.8`
+
 ## 目录
 
 - [android全平台编译ffmpeg以及x264与fdk-aac实践](https://github.com/byhook/ffmpeg4android/blob/master/readme/android全平台编译ffmpeg以及x264与fdk-aac实践.md)
