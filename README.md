@@ -19,3 +19,8 @@
 - [图解RGB565、RGB555、RGB16、RGB24、RGB32、ARGB32等格式的区别](https://github.com/byhook/ffmpeg4android/blob/master/readme/图解RGB565、RGB555、RGB16、RGB24、RGB32、ARGB32等格式的区别.md)
 - [YUV420P、YUV420SP、NV12、NV21和RGB互相转换并存储为JPEG以及PNG图片](https://github.com/byhook/ffmpeg4android/blob/master/readme/YUV420P、YUV420SP、NV12、NV21和RGB互相转换并存储为JPEG以及PNG图片.md)
 - [android全平台编译libyuv库实现YUV和RGB的转换](https://github.com/byhook/ffmpeg4android/blob/master/readme/android全平台编译libyuv库实现YUV和RGB的转换.md)
+- [android平台下基于ffmpeg对相机采集的NV21数据编码为MP4视频文件](https://github.com/byhook/ffmpeg4android/blob/master/readme/android平台下基于ffmpeg对相机采集的NV21数据编码为MP4视频文件.md)
+- [android平台下基于ffmpeg采集Camera数据编码成H.264推流到RTMP服务器](https://github.com/byhook/ffmpeg4android/blob/master/readme/android平台下基于ffmpeg采集Camera数据编码成H.264推流到RTMP服务器.md)
+- [android平台下基于ffmpeg和ANativeWindow实现简单的视频播放器](https://github.com/byhook/ffmpeg4android/blob/master/readme/android平台下基于ffmpeg和ANativeWindow实现简单的视频播放器.md)
+- [android平台下基于ffmpeg实现对相机预览截图的功能(NV21数据编码为JPEG文件)](https://github.com/byhook/ffmpeg4android/blob/master/readme/android平台下基于ffmpeg实现对相机预览NV21数据编码为JPEG文件.md)
+- [android平台下基于ffmpeg的swscale模块实现对YUV和RGB数据进行转换](https://github.com/byhook/ffmpeg4android/blob/master/readme/android平台下基于ffmpeg的swscale模块实现对YUV和RGB数据进行转换.md)
