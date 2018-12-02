@@ -1,4 +1,4 @@
-package com.onzhou.audio.record;
+package com.onzhou.audio.encode;
 
 /**
  * @anchor: andy
@@ -16,10 +16,8 @@ public interface IAudioRecorder {
 
     /**
      * 初始化
-     *
-     * @param filePath
      */
-    void initRecorder(String filePath);
+    void initRecorder();
 
     /**
      * 开始录制音频

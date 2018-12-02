@@ -1,4 +1,4 @@
-include ':ffmpeg-single-swscale', ':audio-record'
+include ':ffmpeg-single-swscale', ':ffmpeg-audio-encode'
 include ':ffmpeg-multiple-hello'
 include ':sdl2-hello'
 include ':ffmpeg-single-decode'

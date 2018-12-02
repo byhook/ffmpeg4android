@@ -9,20 +9,21 @@ import android.support.v4.app.ActivityCompat;
 import android.view.View;
 import android.widget.Button;
 
-import com.onzhou.audio.record.AudioRecordRecorder;
-import com.onzhou.audio.record.IAudioRecorder;
-import com.onzhou.audio.record.MediaRecordRecorder;
-import com.onzhou.audio.record.R;
+import com.onzhou.audio.encode.AudioRecordRecorder;
+import com.onzhou.audio.encode.IAudioRecorder;
+import com.onzhou.audio.encode.MediaRecordRecorder;
+import com.onzhou.audio.encode.R;
 import com.onzhou.ffmpeg.base.AbsBaseActivity;
 
 import java.io.File;
 
 /**
  * @anchor: andy
- * @date: 18-11-10
+ * @date: 18-12-2
  */
 
-public class AudioRecordActivity extends AbsBaseActivity {
+public class AudioEncodeActivity extends AbsBaseActivity {
+
 
     private static final int PERMISSION_CODE = 1000;
 
@@ -33,7 +34,7 @@ public class AudioRecordActivity extends AbsBaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_audio_record);
+        setContentView(R.layout.activity_audio_encode);
     }
 
     @Override
@@ -67,11 +68,12 @@ public class AudioRecordActivity extends AbsBaseActivity {
     }
 
     public void onRecordStart(View view) {
+        File targetDir = getExternalFilesDir(null);
         if (audioRecorder == null) {
-            audioRecorder = new AudioRecordRecorder();
+            audioRecorder = new MediaRecordRecorder(targetDir.getAbsolutePath()+ File.separator+"output.aac");
+            //audioRecorder = new AudioRecordRecorder(targetDir.getAbsolutePath()+ File.separator+"output.pcm");
         }
-        File audioFile = new File(getExternalFilesDir(null), "output.pcm");
-        audioRecorder.initRecorder(audioFile.getAbsolutePath());
+        audioRecorder.initRecorder();
         audioRecorder.recordStart();
         //更新按钮状态
         mBtnStart.setEnabled(false);

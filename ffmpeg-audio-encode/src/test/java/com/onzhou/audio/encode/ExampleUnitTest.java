@@ -1,4 +1,4 @@
-package com.onzhou.audio.record;
+package com.onzhou.audio.encode;
 
 import org.junit.Test;
 

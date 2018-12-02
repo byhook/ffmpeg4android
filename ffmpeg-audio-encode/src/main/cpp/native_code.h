@@ -1,0 +1,11 @@
+
+#ifndef FFMPEG4ANDROID_NATIVE_CODE_H
+#define FFMPEG4ANDROID_NATIVE_CODE_H
+
+
+class native_code {
+
+};
+
+
+#endif //FFMPEG4ANDROID_NATIVE_CODE_H

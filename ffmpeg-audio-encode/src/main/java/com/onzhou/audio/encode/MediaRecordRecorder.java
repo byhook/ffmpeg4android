@@ -1,9 +1,7 @@
-package com.onzhou.audio.record;
+package com.onzhou.audio.encode;
 
 import android.media.MediaRecorder;
-import android.os.Environment;
 
-import java.io.File;
 import java.io.IOException;
 
 /**
@@ -24,8 +22,14 @@ public class MediaRecordRecorder implements IAudioRecorder {
      */
     private boolean isRecord = false;
 
+    private String filePath;
+
+    public MediaRecordRecorder(String filePath){
+        this.filePath = filePath;
+    }
+
     @Override
-    public void initRecorder(String filePath) {
+    public void initRecorder() {
         //实例化MediaRecorder对象
         mMediaRecorder = new MediaRecorder();
 

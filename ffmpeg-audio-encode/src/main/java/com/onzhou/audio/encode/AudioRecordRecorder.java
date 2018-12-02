@@ -1,13 +1,13 @@
-package com.onzhou.audio.record;
+package com.onzhou.audio.encode;
+
+import android.media.AudioFormat;
+import android.media.AudioRecord;
+import android.media.MediaRecorder;
 
 import java.io.Closeable;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-
-import android.media.AudioFormat;
-import android.media.AudioRecord;
-import android.media.MediaRecorder;
 
 /**
  * @anchor: andy
@@ -64,9 +64,12 @@ public class AudioRecordRecorder implements IAudioRecorder {
      */
     private boolean isRecording = false;
 
-    @Override
-    public void initRecorder(String filePath) {
+    public AudioRecordRecorder(String filePath) {
         this.pcmPath = filePath;
+    }
+
+    @Override
+    public void initRecorder() {
         if (null != audioRecord) {
             audioRecord.release();
         }
