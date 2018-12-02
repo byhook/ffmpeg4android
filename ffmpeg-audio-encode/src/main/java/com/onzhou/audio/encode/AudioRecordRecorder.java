@@ -3,6 +3,7 @@ package com.onzhou.audio.encode;
 import android.media.AudioFormat;
 import android.media.AudioRecord;
 import android.media.MediaRecorder;
+import android.text.TextUtils;
 
 import java.io.Closeable;
 import java.io.FileNotFoundException;
@@ -27,7 +28,7 @@ public class AudioRecordRecorder implements IAudioRecorder {
     /**
      * 单声道
      */
-    public final static int CHANNEL = AudioFormat.CHANNEL_IN_MONO;
+    public final static int CHANNEL = AudioFormat.CHANNEL_IN_STEREO;
 
     /**
      * 16比特
@@ -45,11 +46,6 @@ public class AudioRecordRecorder implements IAudioRecorder {
     private Thread recordThread;
 
     /**
-     * 输出流
-     */
-    private FileOutputStream outputStream;
-
-    /**
      * 输出的文件路径
      */
     private String pcmPath;
@@ -64,6 +60,11 @@ public class AudioRecordRecorder implements IAudioRecorder {
      */
     private boolean isRecording = false;
 
+    /**
+     * 回调原始的PCM数据
+     */
+    private OnAudioRecordListener mOnAudioRecordListener;
+
     public AudioRecordRecorder(String filePath) {
         this.pcmPath = filePath;
     }
@@ -75,6 +76,7 @@ public class AudioRecordRecorder implements IAudioRecorder {
         }
         try {
             bufferSize = AudioRecord.getMinBufferSize(SAMPLE_RATE, CHANNEL, AUDIO_FORMAT);
+            bufferSize = 4096;
             audioRecord = new AudioRecord(AUDIO_SOURCE, SAMPLE_RATE, CHANNEL, AUDIO_FORMAT, bufferSize);
         } catch (Exception e) {
             e.printStackTrace();
@@ -135,15 +137,24 @@ public class AudioRecordRecorder implements IAudioRecorder {
 
     private class AudioRecordRunnable implements Runnable {
 
+        private FileOutputStream outputStream = null;
+
         @Override
         public void run() {
             try {
-                outputStream = new FileOutputStream(pcmPath);
+                if (!TextUtils.isEmpty(pcmPath)) {
+                    outputStream = new FileOutputStream(pcmPath);
+                }
                 byte[] audioBuffer = new byte[bufferSize];
                 while (isRecording && audioRecord != null) {
                     int audioSampleSize = audioRecord.read(audioBuffer, 0, bufferSize);
                     if (audioSampleSize > 0) {
-                        outputStream.write(audioBuffer);
+                        if (outputStream != null) {
+                            outputStream.write(audioBuffer);
+                        }
+                        if (mOnAudioRecordListener != null) {
+                            mOnAudioRecordListener.onAudioBuffer(audioBuffer, audioBuffer.length);
+                        }
                     }
                 }
             } catch (FileNotFoundException e) {
@@ -167,5 +178,14 @@ public class AudioRecordRecorder implements IAudioRecorder {
         }
     }
 
+    public void setOnAudioRecordListener(OnAudioRecordListener onAudioRecordListener) {
+        this.mOnAudioRecordListener = onAudioRecordListener;
+    }
+
+    public interface OnAudioRecordListener {
+
+        void onAudioBuffer(byte[] buffer, int length);
+
+    }
 
 }

@@ -12,6 +12,7 @@ import android.widget.Button;
 import com.onzhou.audio.encode.AudioRecordRecorder;
 import com.onzhou.audio.encode.IAudioRecorder;
 import com.onzhou.audio.encode.MediaRecordRecorder;
+import com.onzhou.audio.encode.NativeAudioEncoder;
 import com.onzhou.audio.encode.R;
 import com.onzhou.ffmpeg.base.AbsBaseActivity;
 
@@ -70,8 +71,9 @@ public class AudioEncodeActivity extends AbsBaseActivity {
     public void onRecordStart(View view) {
         File targetDir = getExternalFilesDir(null);
         if (audioRecorder == null) {
-            audioRecorder = new MediaRecordRecorder(targetDir.getAbsolutePath()+ File.separator+"output.aac");
+            //audioRecorder = new MediaRecordRecorder(targetDir.getAbsolutePath()+ File.separator+"output.aac");
             //audioRecorder = new AudioRecordRecorder(targetDir.getAbsolutePath()+ File.separator+"output.pcm");
+            audioRecorder = new NativeAudioEncoder(targetDir.getAbsolutePath()+ File.separator+"output.aac");
         }
         audioRecorder.initRecorder();
         audioRecorder.recordStart();

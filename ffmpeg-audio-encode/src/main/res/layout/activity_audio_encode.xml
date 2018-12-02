@@ -21,5 +21,4 @@
         android:onClick="onRecordStop"
         android:text="停止录音" />
 
-
 </LinearLayout>

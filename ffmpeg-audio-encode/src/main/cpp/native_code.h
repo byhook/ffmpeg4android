@@ -1,11 +1,20 @@
+#include <jni.h>
 
-#ifndef FFMPEG4ANDROID_NATIVE_CODE_H
-#define FFMPEG4ANDROID_NATIVE_CODE_H
+#ifndef NATIVE_AUDIO_CODE_H
+#define NATIVE_AUDIO_CODE_H
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 
-class native_code {
+JNIEXPORT void JNICALL onAudioFrame(JNIEnv *, jobject, jbyteArray, jint);
 
-};
+JNIEXPORT void JNICALL encodeAudioStart(JNIEnv *, jobject, jstring);
 
+JNIEXPORT void JNICALL encodeAudioStop(JNIEnv *, jobject);
 
-#endif //FFMPEG4ANDROID_NATIVE_CODE_H
+#ifdef __cplusplus
+}
+#endif
+#endif

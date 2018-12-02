@@ -1,1 +1,9 @@
 apply from: "$rootDir/module.gradle"
+
+android {
+    buildTypes {
+        debug {
+            jniDebuggable true
+        }
+    }
+}
