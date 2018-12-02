@@ -16,3 +16,6 @@
 - [android平台下音频编码之编译LAME库转码PCM为MP3](https://github.com/byhook/ffmpeg4android/blob/master/readme/android平台下音频编码之编译LAME库转码PCM为MP3.md)
 - [ubuntu平台下编译vlc-android视频播放器实践](https://github.com/byhook/ffmpeg4android/blob/master/readme/ubuntu平台下编译vlc-android视频播放器实践.md)
 - [图解YU12、I420、YV12、NV12、NV21、YUV420P、YUV420SP、YUV422P、YUV444P的区别](https://github.com/byhook/ffmpeg4android/blob/master/readme/图解YU12、I420、YV12、NV12、NV21、YUV420P、YUV420SP、YUV422P、YUV444P的区别.md)
+- [图解RGB565、RGB555、RGB16、RGB24、RGB32、ARGB32等格式的区别](https://github.com/byhook/ffmpeg4android/blob/master/readme/图解RGB565、RGB555、RGB16、RGB24、RGB32、ARGB32等格式的区别.md)
+- [YUV420P、YUV420SP、NV12、NV21和RGB互相转换并存储为JPEG以及PNG图片](https://github.com/byhook/ffmpeg4android/blob/master/readme/YUV420P、YUV420SP、NV12、NV21和RGB互相转换并存储为JPEG以及PNG图片.md)
+- [android全平台编译libyuv库实现YUV和RGB的转换](https://github.com/byhook/ffmpeg4android/blob/master/readme/android全平台编译libyuv库实现YUV和RGB的转换.md)
