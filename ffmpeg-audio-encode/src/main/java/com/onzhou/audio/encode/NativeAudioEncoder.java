@@ -66,5 +66,4 @@ public class NativeAudioEncoder implements IAudioRecorder, AudioRecordRecorder.O
         encodeAudioStop();
     }
 
-
 }

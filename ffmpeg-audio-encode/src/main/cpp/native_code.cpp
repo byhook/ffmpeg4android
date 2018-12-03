@@ -46,6 +46,13 @@ jint JNI_OnLoad(JavaVM *vm, void *reserved) {
 
 AACEncoder *pAACEncoder = NULL;
 
+/**
+ * 主要用来接收音频数据
+ * @param env
+ * @param obj
+ * @param jpcmBuffer
+ * @param length
+ */
 void onAudioFrame(JNIEnv *env, jobject obj, jbyteArray jpcmBuffer, jint length) {
     if (NULL != pAACEncoder) {
         jbyte *buffer = env->GetByteArrayElements(jpcmBuffer, NULL);
@@ -54,6 +61,12 @@ void onAudioFrame(JNIEnv *env, jobject obj, jbyteArray jpcmBuffer, jint length) 
     }
 }
 
+/**
+ * 开始录制音频初始化工作
+ * @param env
+ * @param obj
+ * @param jpath
+ */
 void encodeAudioStart(JNIEnv *env, jobject obj, jstring jpath) {
     if (NULL == pAACEncoder) {
         pAACEncoder = new AACEncoder();
@@ -62,6 +75,11 @@ void encodeAudioStart(JNIEnv *env, jobject obj, jstring jpath) {
     }
 }
 
+/**
+ * 结束音频录制收尾工作
+ * @param env
+ * @param obj
+ */
 void encodeAudioStop(JNIEnv *env, jobject obj) {
     if (NULL != pAACEncoder) {
         pAACEncoder->EncodeStop();

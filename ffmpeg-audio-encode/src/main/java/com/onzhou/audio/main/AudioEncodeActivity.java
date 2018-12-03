@@ -68,6 +68,10 @@ public class AudioEncodeActivity extends AbsBaseActivity {
         mBtnStart.setEnabled(true);
     }
 
+    /**
+     * 点击开始录制
+     * @param view
+     */
     public void onRecordStart(View view) {
         File targetDir = getExternalFilesDir(null);
         if (audioRecorder == null) {
@@ -82,6 +86,10 @@ public class AudioEncodeActivity extends AbsBaseActivity {
         mBtnStop.setEnabled(true);
     }
 
+    /**
+     * 点击停止录制
+     * @param view
+     */
     public void onRecordStop(View view) {
         if (audioRecorder != null) {
             audioRecorder.recordStop();
