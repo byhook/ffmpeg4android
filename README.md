@@ -30,3 +30,4 @@
 - [android平台下基于ffmpeg和ANativeWindow实现简单的视频播放器](https://github.com/byhook/ffmpeg4android/blob/master/readme/android平台下基于ffmpeg和ANativeWindow实现简单的视频播放器.md)
 - [android平台下基于ffmpeg实现对相机预览截图的功能(NV21数据编码为JPEG文件)](https://github.com/byhook/ffmpeg4android/blob/master/readme/android平台下基于ffmpeg实现对相机预览NV21数据编码为JPEG文件.md)
 - [android平台下基于ffmpeg的swscale模块实现对YUV和RGB数据进行转换](https://github.com/byhook/ffmpeg4android/blob/master/readme/android平台下基于ffmpeg的swscale模块实现对YUV和RGB数据进行转换.md)
+- [androd平台下基于ffmpeg对AudioRecord录制的PCM音频数据编码为AAC文件](https://github.com/byhook/ffmpeg4android/blob/master/readme/androd平台下基于ffmpeg对AudioRecord录制的PCM音频数据编码为AAC文件.md)
