@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <CheckBox
+        android:id="@+id/chk_audio_record"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_margin="5dp"
+        android:background="@drawable/btn_background_round_shape"
+        android:button="@null"
+        android:enabled="false"
+        android:gravity="center"
+        android:text="开始录音" />
+
+    <CheckBox
+        android:id="@+id/chk_audio_play"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_margin="5dp"
+        android:background="@drawable/btn_background_round_shape"
+        android:button="@null"
+        android:enabled="false"
+        android:gravity="center"
+        android:text="开始播放" />
+
+</LinearLayout>

@@ -1,4 +1,4 @@
-include ':ffmpeg-single-swscale', ':ffmpeg-audio-encode', ':ffmpeg-muxer-code', ':common-avcapture'
+include ':ffmpeg-single-swscale', ':ffmpeg-audio-encode', ':ffmpeg-muxer-code', ':common-avcapture', ':audio-opensles'
 include ':ffmpeg-multiple-hello'
 include ':sdl2-hello'
 include ':ffmpeg-single-decode'
