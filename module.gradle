@@ -33,19 +33,14 @@ android {
         targetSdkVersion rootProject.ext.android.targetSdkVersion
         versionCode rootProject.ext.android.versionCode
         versionName rootProject.ext.android.versionName
-
         externalNativeBuild {
+            cmake {
+                cppFlags ""
+            }
             ndk {
-                ldLibs "rt"
                 abiFilters "armeabi-v7a"
             }
-            cmake {
-                arguments '-DANDROID_PLATFORM=android-21',
-                        '-DANDROID_TOOLCHAIN=clang'
-                cppFlags "-frtti -fexceptions"
-            }
         }
-
         sourceSets {
             main {
                 //库地址
