@@ -4,15 +4,8 @@
 #include "logger.h"
 #include "mp4_stream.h"
 
-AVOutputFormat *ofmt = NULL;
-AVCodecContext *codec_ctx = NULL;
-AVFormatContext *in_fmt = NULL, *out_fmt = NULL;
-AVPacket avPacket;
 
-//退出标记
-int exit_flag = 1;
-
-int start_publish(const char *mp4Path, const char *stream) {
+int MP4Stream::start_publish(const char *mp4Path, const char *stream) {
     //记录帧下标
     int frame_index = 0;
     //退出标记
@@ -32,7 +25,6 @@ int start_publish(const char *mp4Path, const char *stream) {
         goto end_line;
     }
     //遍历视频轨
-    int videoIndex = -1;
     for (int index = 0; index < in_fmt->nb_streams; index++){
         if (in_fmt->streams[index]->codecpar->codec_type == AVMEDIA_TYPE_VIDEO) {
             videoIndex = index;
@@ -77,9 +69,8 @@ int start_publish(const char *mp4Path, const char *stream) {
         goto end_line;
     }
 
-    AVStream *in_stream = NULL, *out_stream = NULL;
     //记录开始时间
-    int64_t start_time = av_gettime();
+    start_time = av_gettime();
     //读取帧数据AVPacket
     while (exit_flag && av_read_frame(in_fmt, &avPacket) >= 0) {
         if (avPacket.stream_index == videoIndex) {
@@ -97,10 +88,10 @@ int start_publish(const char *mp4Path, const char *stream) {
 
         //PTS主要用于度量解码后的视频帧什么时候被显示出来
         avPacket.pts = av_rescale_q_rnd(avPacket.pts, in_stream->time_base, out_stream->time_base,
-                                        AV_ROUND_NEAR_INF | AV_ROUND_PASS_MINMAX);
+                                        (AVRounding) (AV_ROUND_NEAR_INF | AV_ROUND_PASS_MINMAX));
         //DTS主要是标识读入内存中的字节流在什么时候开始送入解码器中进行解码
         avPacket.dts = av_rescale_q_rnd(avPacket.dts, in_stream->time_base, out_stream->time_base,
-                                        AV_ROUND_NEAR_INF | AV_ROUND_PASS_MINMAX);
+                                        (AVRounding) (AV_ROUND_NEAR_INF | AV_ROUND_PASS_MINMAX));
         avPacket.duration = av_rescale_q(avPacket.duration, in_stream->time_base,
                                          out_stream->time_base);
         avPacket.pos = -1;
@@ -132,7 +123,7 @@ int start_publish(const char *mp4Path, const char *stream) {
 /**
  * 停止推流
  */
-void stop_publish() {
+void MP4Stream::stop_publish() {
     exit_flag = 0;
 }
 

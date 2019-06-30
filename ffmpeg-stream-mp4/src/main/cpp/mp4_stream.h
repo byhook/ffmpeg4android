@@ -15,13 +15,36 @@ extern "C" {
 #include "libavutil/log.h"
 #include "libavutil/time.h"
 
-int start_publish(const char *mp4Path, const char *stream);
-
-void stop_publish();
-
 #ifdef __cplusplus
 }
 #endif
+
+class MP4Stream{
+
+
+private:
+
+    AVOutputFormat *ofmt = NULL;
+    AVCodecContext *codec_ctx = NULL;
+    AVFormatContext *in_fmt = NULL, *out_fmt = NULL;
+    AVPacket avPacket;
+
+    AVStream *in_stream = NULL, *out_stream = NULL;
+
+    //退出标记
+    int exit_flag = 1;
+
+    int videoIndex = 0;
+
+    int64_t start_time = 0;
+
+public:
+
+    int start_publish(const char *mp4Path, const char *stream);
+
+    void stop_publish();
+
+};
 
 
 #endif

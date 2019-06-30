@@ -26,7 +26,7 @@ public class NativeStreamActivity extends AbsBaseActivity implements AssertRelea
     /**
      * 推流地址
      */
-    private static final String PUBLISH_ADDRESS = "rtmp://192.168.1.24:1935/onzhou/live";
+    private static final String PUBLISH_ADDRESS = "rtmp://192.168.1.102:1935/onzhou/live";
 
     /**
      * 开始推流按钮

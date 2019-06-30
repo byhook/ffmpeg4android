@@ -42,12 +42,18 @@ jint JNI_OnLoad(JavaVM *vm, void *reserved) {
     return JNI_VERSION_1_6;
 }
 
+
+MP4Stream * mp4Stream = NULL;
+
 jint startPublish(JNIEnv *env, jobject obj, jstring jmp4Path, jstring jstream) {
 
     const char *mp4Path = env->GetStringUTFChars(jmp4Path, NULL);
     const char *stream = env->GetStringUTFChars(jstream, NULL);
 
-    start_publish(mp4Path, stream);
+    if(mp4Stream==NULL){
+        mp4Stream = new MP4Stream();
+    }
+    mp4Stream->start_publish(mp4Path, stream);
 
     env->ReleaseStringUTFChars(jmp4Path, mp4Path);
     env->ReleaseStringUTFChars(jstream, stream);
@@ -56,5 +62,8 @@ jint startPublish(JNIEnv *env, jobject obj, jstring jmp4Path, jstring jstream) {
 }
 
 void stopPublish(JNIEnv *env, jobject obj) {
-    stop_publish();
+    if(mp4Stream!=NULL){
+        mp4Stream->stop_publish();
+    }
+    mp4Stream = NULL;
 }
