@@ -7,8 +7,9 @@
 ## 环境配置
 
 - 操作系统：`ubuntu 16.05`
-- ndk版本：`android-ndk-r16b`
-- ffmpeg版本：`ffmpeg-3.3.8`
+- ndk版本：`android-ndk-r15c`
+- ffmpeg版本：`3.3.8和3.4.6`
+- fdk-aac版本：`0.1.6`
 
 ## 目录
 
@@ -30,4 +31,5 @@
 - [android平台下基于ffmpeg和ANativeWindow实现简单的视频播放器](https://github.com/byhook/ffmpeg4android/blob/master/readme/android平台下基于ffmpeg和ANativeWindow实现简单的视频播放器.md)
 - [android平台下基于ffmpeg实现对相机预览截图的功能(NV21数据编码为JPEG文件)](https://github.com/byhook/ffmpeg4android/blob/master/readme/android平台下基于ffmpeg实现对相机预览NV21数据编码为JPEG文件.md)
 - [android平台下基于ffmpeg的swscale模块实现对YUV和RGB数据进行转换](https://github.com/byhook/ffmpeg4android/blob/master/readme/android平台下基于ffmpeg的swscale模块实现对YUV和RGB数据进行转换.md)
-- [androd平台下基于ffmpeg对AudioRecord录制的PCM音频数据编码为AAC文件](https://github.com/byhook/ffmpeg4android/blob/master/readme/androd平台下基于ffmpeg对AudioRecord录制的PCM音频数据编码为AAC文件.md)
+- [android平台下基于ffmpeg对AudioRecord录制的PCM音频数据编码为AAC文件](https://github.com/byhook/ffmpeg4android/blob/master/readme/androd平台下基于ffmpeg对AudioRecord录制的PCM音频数据编码为AAC文件.md)
+- [android平台下基于cmake链接ffmpeg-3.4.6的armeabi-v7a和arm64-v8a的静态库](https://github.com/byhook/ffmpeg4android/blob/master/readme/android平台下基于cmake链接ffmpeg-3.4.6的armeabi-v7a和arm64-v8a的静态库.md)
