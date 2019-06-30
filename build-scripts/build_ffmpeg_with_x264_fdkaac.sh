@@ -7,45 +7,53 @@ NOW_DIR=$(cd `dirname $0`; pwd)
 LIBS_DIR=$NOW_DIR/libs
 echo "LIBS_DIR="$LIBS_DIR
 
-cd ffmpeg-3.3.8
+cd ffmpeg-3.4.6
 
-PLATFORM=$ANDROID_NDK_ROOT/platforms/$AOSP_API/$AOSP_ARCH
+PREFIX=$LIBS_DIR/ffmpeg-x264-fdkaac-merge/$AOSP_ABI
 TOOLCHAIN=$ANDROID_NDK_ROOT/toolchains/$TOOLCHAIN_BASE-$AOSP_TOOLCHAIN_SUFFIX/prebuilt/linux-x86_64
+SYSROOT=$ANDROID_NDK_ROOT/platforms/$AOSP_API/arch-$AOSP_ARCH
+CROSS_PREFIX=$TOOLCHAIN/bin/$TOOLNAME_BASE-
 
-PREFIX=$LIBS_DIR/ffmpeg-x264-fdkaac/$AOSP_ABI
 
 FDK_INCLUDE=$LIBS_DIR/libfdk-aac/$AOSP_ABI/include
 FDK_LIB=$LIBS_DIR/libfdk-aac/$AOSP_ABI/lib
 X264_INCLUDE=$LIBS_DIR/libx264/$AOSP_ABI/include
 X264_LIB=$LIBS_DIR/libx264/$AOSP_ABI/lib
 
+echo $SYSROOT
+echo $CROSS_PREFIX
+echo $FDK_LIB
+echo $X264_LIB
+
 ./configure \
 --prefix=$PREFIX \
 --enable-cross-compile \
 --disable-runtime-cpudetect \
 --disable-asm \
---arch=$AOSP_ABI \
+--arch=$AOSP_ARCH \
 --target-os=android \
 --cc=$TOOLCHAIN/bin/$TOOLNAME_BASE-gcc \
---cross-prefix=$TOOLCHAIN/bin/$TOOLNAME_BASE- \
+--cross-prefix=$CROSS_PREFIX \
 --disable-stripping \
 --nm=$TOOLCHAIN/bin/$TOOLNAME_BASE-nm \
---sysroot=$PLATFORM \
---extra-cflags="-I$X264_INCLUDE  -I$FDK_INCLUDE " \
---extra-ldflags="-L$FDK_LIB -L$X264_LIB" \
+--sysroot=$SYSROOT \
+--extra-cflags="-I$X264_INCLUDE -I$FDK_INCLUDE " \
+--extra-ldflags="-L$X264_LIB -L$FDK_LIB" \
 --enable-gpl \
 --enable-nonfree \
 --disable-shared \
 --enable-static \
---enable-small \
 --enable-version3 \
 --enable-pthreads \
 --enable-small \
+--disable-vda \
+--disable-iconv \
 --enable-libx264 \
 --enable-neon \
 --enable-yasm \
 --enable-libfdk_aac \
 --enable-encoder=libx264 \
+--enable-encoder=mpeg4 \
 --enable-encoder=libfdk_aac \
 --enable-encoder=mjpeg \
 --enable-encoder=png \
@@ -76,6 +84,7 @@ X264_LIB=$LIBS_DIR/libx264/$AOSP_ABI/lib
 --enable-avfilter \
 --enable-postproc \
 --enable-avdevice \
+--enable-avresample \
 --disable-outdevs \
 --disable-ffprobe \
 --disable-ffplay \
@@ -91,25 +100,8 @@ X264_LIB=$LIBS_DIR/libx264/$AOSP_ABI/lib
 --extra-ldflags="  "
 
 make clean
-make -j8
+make -j4
 make install
-
-
-# 这段解释见后文
-$TOOLCHAIN/bin/$TOOLNAME_BASE-ld -rpath-link=$PLATFORM/usr/lib -L$PLATFORM/usr/lib -L$PREFIX/lib -soname libffmpeg.so -shared -nostdlib -Bsymbolic --whole-archive --no-undefined -o $PREFIX/libffmpeg.so \
-    $FDK_LIB/libfdk-aac.a \
-    $X264_LIB/libx264.a \
-    libavcodec/libavcodec.a \
-    libavfilter/libavfilter.a \
-    libavresample/libavresample.a \
-    libswresample/libswresample.a \
-    libavformat/libavformat.a \
-    libavutil/libavutil.a \
-    libswscale/libswscale.a \
-    libpostproc/libpostproc.a \
-    libavdevice/libavdevice.a \
-    -lc -lm -lz -ldl -llog --dynamic-linker=/system/bin/linker $TOOLCHAIN/lib/gcc/$TOOLNAME_BASE/4.9/libgcc.a
-
 
 cd ..
 

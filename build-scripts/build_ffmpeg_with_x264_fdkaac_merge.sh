@@ -100,7 +100,6 @@ make install
 
 
 
-# 这段解释见后文
 $TOOLCHAIN/bin/$TOOLNAME_BASE-ld -rpath-link=$PLATFORM/usr/lib -L$PLATFORM/usr/lib -L$PREFIX/lib -soname libffmpeg.so -shared -nostdlib -Bsymbolic --whole-archive --no-undefined -o $PREFIX/libffmpeg.so \
     $FDK_LIB/libfdk-aac.a \
     $X264_LIB/libx264.a \
