@@ -10,6 +10,7 @@
 - ndk版本：`android-ndk-r15c`
 - ffmpeg版本：`3.3.8和3.4.6`
 - fdk-aac版本：`0.1.6`
+- so文件的依赖在common的Lib里编译cmakeList出so需要使用
 
 ## 目录
 
