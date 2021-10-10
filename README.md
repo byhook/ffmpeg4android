@@ -10,6 +10,7 @@
 - ndk版本：`android-ndk-r15c`
 - ffmpeg版本：`3.3.8和3.4.6`
 - fdk-aac版本：`0.1.6`
+- so文件的依赖在common的Lib里编译cmakeList出so需要使用
 
 ## 目录
 
@@ -33,3 +34,5 @@
 - [android平台下基于ffmpeg的swscale模块实现对YUV和RGB数据进行转换](https://github.com/byhook/ffmpeg4android/blob/master/readme/android平台下基于ffmpeg的swscale模块实现对YUV和RGB数据进行转换.md)
 - [android平台下基于ffmpeg对AudioRecord录制的PCM音频数据编码为AAC文件](https://github.com/byhook/ffmpeg4android/blob/master/readme/androd平台下基于ffmpeg对AudioRecord录制的PCM音频数据编码为AAC文件.md)
 - [android平台下基于cmake链接ffmpeg-3.4.6的armeabi-v7a和arm64-v8a的静态库](https://github.com/byhook/ffmpeg4android/blob/master/readme/android平台下基于cmake链接ffmpeg-3.4.6的armeabi-v7a和arm64-v8a的静态库.md)
+
+
